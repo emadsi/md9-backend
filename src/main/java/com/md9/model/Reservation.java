@@ -9,15 +9,15 @@ import java.time.LocalTime;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+   
     private Long reservationId;
-
     private String reserverName;
     private String mobileNumber;
     private LocalDate date;
     private LocalTime from;
     private LocalTime to;
     private String paymentMethod; // "Cash" or "Credit"
-    private String confirmationNumber;
+    private String confirmationNo;
     private String status; // "Done", "Cancelled", "Pending"
 
     // Getters and Setters
