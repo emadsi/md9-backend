@@ -1,9 +1,13 @@
 // /service/MyUserDetailsService.java
 package com.md9.service;
 
-import com.md9.model.Admin;
+import com.md9.entity.Admin;
 import com.md9.repository.AdminRepository;
+
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-
     @Autowired
     private AdminRepository adminRepository;
 
@@ -21,6 +24,6 @@ public class MyUserDetailsService implements UserDetailsService {
         if (admin == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(admin.getUsername(), admin.getPassword(), new ArrayList<>());
+        return new User(admin.getUsername(), admin.getPassword(), new ArrayList<>());
     }
 }

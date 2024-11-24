@@ -1,7 +1,10 @@
 // /model/Cancellation.java
-package com.md9.model;
+package com.md9.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Cancellation {

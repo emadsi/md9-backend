@@ -1,7 +1,7 @@
 // /repository/ReservationRepository.java
 package com.md9.repository;
 
-import com.md9.model.Reservation;
+import com.md9.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
