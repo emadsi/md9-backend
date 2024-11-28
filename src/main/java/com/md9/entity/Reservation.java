@@ -16,7 +16,7 @@ public class Reservation {
    
     private Long reservationId;
     private String reserveeName;
-    private String mobileNumber;
+    private String mobile;
     private LocalDate date;
     private TimeSlot timeSlot;
     private String paymentMethod; // "Cash" or "Credit"
@@ -33,7 +33,7 @@ public class Reservation {
     }
 
     public String getMobileNumber() {
-        return this.mobileNumber;
+        return this.mobile;
     }
 
     public LocalDate getDate() {
@@ -66,7 +66,7 @@ public class Reservation {
     }
 
     public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+        this.mobile = mobileNumber;
     }
 
     public void setDate(LocalDate date) {
