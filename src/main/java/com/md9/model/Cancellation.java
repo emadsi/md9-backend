@@ -1,17 +1,20 @@
 // /model/Cancellation.java
-package com.md9.entity;
+package com.md9.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "cancellations")
 public class Cancellation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cancellationId;
+
+    @ManyToOne
+    @JoinColumn(name = "reservation_id", nullable = false)
     private Long reservationId;
+
+    @Column(nullable = false)
     private String cancelledBy; // "User" or Admin Name
 
     // Getters 

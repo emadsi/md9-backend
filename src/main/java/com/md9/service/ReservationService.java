@@ -1,7 +1,7 @@
 // /service/ReservationService.java
 package com.md9.service;
 
-import com.md9.entity.Reservation;
+import com.md9.model.Reservation;
 import com.md9.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,11 @@ import java.util.List;
 public class ReservationService {
 
     @Autowired
-    private ReservationRepository reservationRepository;
+    private final ReservationRepository reservationRepository;
+
+    public ReservationService(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
 
     public Reservation createReservation(Reservation reservation) {
         return reservationRepository.save(reservation);
@@ -22,11 +26,11 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public Reservation findByConfirmationNumber(String confirmationNumber) {
-        return reservationRepository.findByConfirmationNumber(confirmationNumber);
-    }
+    // public Reservation findByConfirmationNumber(String confirmationNumber) {
+    //     return reservationRepository.findByConfirmationNumber(confirmationNumber);
+    // }
 
-    public void deleteReservation(Long id) {
+    public void cancelReservation(Long id) {
         reservationRepository.deleteById(id);
     }
 }

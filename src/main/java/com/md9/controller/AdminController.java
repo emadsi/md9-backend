@@ -1,6 +1,6 @@
 package com.md9.controller;
 
-import com.md9.entity.Admin;
+import com.md9.model.Admin;
 import com.md9.service.JwtUtil;
 // import com.md9.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

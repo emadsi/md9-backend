@@ -1,7 +1,7 @@
 // /service/MyUserDetailsService.java
 package com.md9.service;
 
-import com.md9.entity.Admin;
+import com.md9.model.Admin;
 import com.md9.repository.AdminRepository;
 
 import java.util.ArrayList;
