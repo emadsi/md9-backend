@@ -1,20 +1,15 @@
 // /model/Cancellation.java
 package com.md9.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "cancellations")
+
+@Document(collection = "cancellations")
 public class Cancellation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cancellationId;
-
-    @ManyToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
     private Long reservationId;
-
-    @Column(nullable = false)
     private String cancelledBy; // "User" or Admin Name
 
     // Getters 

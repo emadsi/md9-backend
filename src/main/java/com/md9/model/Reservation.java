@@ -1,65 +1,21 @@
-// /model/Reservation.java
-// package com.md9.model;
-
-// import jakarta.persistence.Column;
-// import jakarta.persistence.Entity;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
-// import jakarta.persistence.Id;
-// import java.time.LocalDate;
-
-// @Entity
-// public class Reservation {
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   
-//     private Long reservationId;
-//     @Column(nullable = false)
-//     private String reserverName;
-//     @Column(nullable = false)
-//     private String mobile;
-//     @Column(nullable = false)
-//     private LocalDate date;
-//     @Column(nullable = false)
-//     private Number timeSlotId;
-//     @Column(nullable = false)
-//     private String paymentMethod; // "Cash" or "Credit"
-//     @Column(nullable = false, unique = true)
-//     private int confirmationNo;
-//     @Column(nullable = false)
-//     private String status; // "Done", "Cancelled", "Pending"
 package com.md9.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "reservations")
+
+@Document(collection = "reservations")
 public class Reservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
-
-    @Column(nullable = false)
     private String reserverName;
-
-    @Column(nullable = false)
     private String mobile;
-
-    @Column(nullable = false)
     private LocalDate date;
-
-    @Column(nullable = false)
-    private Number timeSlotId;
-
-    @Column(nullable = false)
+    private Long timeSlotId;
     private String paymentMethod;
-
-    @Column(nullable = false, unique = true)
-    private int confirmationNo;
-
-    @Column(nullable = false)
+    private Long confirmationNo;
     private String status;
 
     // Getters 
@@ -79,7 +35,7 @@ public class Reservation {
         return this.date;
     }
 
-    public Number getTimeSlot() {
+    public Long getTimeSlot() {
         return this.timeSlotId;
     }
 
@@ -87,7 +43,7 @@ public class Reservation {
         return this.paymentMethod;
     }
 
-    public int getConfirmationNo() {
+    public Long getConfirmationNo() {
         return this.confirmationNo;
     }
 
@@ -112,7 +68,7 @@ public class Reservation {
         this.date = date;
     }
 
-    public void setTimeSlot(Number timeSlotId) {
+    public void setTimeSlot(Long timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 
@@ -120,7 +76,7 @@ public class Reservation {
         this.paymentMethod = paymentMethod;
     }
 
-    public void setConfirmationNo(int confirmationNo) {
+    public void setConfirmationNo(Long confirmationNo) {
         this.confirmationNo = confirmationNo;
     }
 

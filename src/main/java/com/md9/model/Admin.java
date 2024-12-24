@@ -1,25 +1,17 @@
 // /model/Admin.java
 package com.md9.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "admins")
+
+@Document(collection = "admins")
 public class Admin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminId;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false, unique = true)
     private String username;
-
-    @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false, unique = true)
     private String email;
 
     // Getters

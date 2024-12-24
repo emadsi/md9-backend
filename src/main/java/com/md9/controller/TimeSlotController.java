@@ -2,11 +2,13 @@ package com.md9.controller;
 
 import com.md9.model.TimeSlot;
 import com.md9.service.TimeSlotService;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/timeslots")
 public class TimeSlotController {
     private final TimeSlotService timeSlotService;

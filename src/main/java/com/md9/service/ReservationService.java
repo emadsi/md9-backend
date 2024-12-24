@@ -2,24 +2,40 @@
 package com.md9.service;
 
 import com.md9.model.Reservation;
+import com.md9.model.TimeSlot;
 import com.md9.repository.ReservationRepository;
+import com.md9.repository.TimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
 
     @Autowired
     private final ReservationRepository reservationRepository;
+    private final TimeSlotRepository timeSlotRepository;
 
-    public ReservationService(ReservationRepository reservationRepository) {
+    public ReservationService(ReservationRepository reservationRepository, TimeSlotRepository timeSlotRepository) {
         this.reservationRepository = reservationRepository;
+        this.timeSlotRepository = timeSlotRepository;
     }
 
+    // public Reservation createReservation(Reservation reservation) {
+    //     return reservationRepository.save(reservation);
+    // }
+
     public Reservation createReservation(Reservation reservation) {
+        reservation.setConfirmationNo(generateConfirmationNumber());
+        reservation.setStatus("Pending");
         return reservationRepository.save(reservation);
+    }
+    
+    private Long generateConfirmationNumber() {
+        return (long) (Math.random() * 9000 + 1000);
     }
 
     public List<Reservation> getAllReservations() {
@@ -32,5 +48,19 @@ public class ReservationService {
 
     public void cancelReservation(Long id) {
         reservationRepository.deleteById(id);
+    }
+
+    public List<Long> getAvailableTimeSlots(LocalDate date) {
+        // Fetch all timeslots
+        List<TimeSlot> allTimeslots = timeSlotRepository.findAll();
+
+        // Fetch reserved timeslot IDs for the given date
+        List<Long> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
+
+        // Filter available timeslots
+        return allTimeslots.stream()
+                .filter(timeslot -> !reservedTimeslotIds.contains(timeslot.getId()))
+                .map(TimeSlot::getId)
+                .collect(Collectors.toList());
     }
 }
