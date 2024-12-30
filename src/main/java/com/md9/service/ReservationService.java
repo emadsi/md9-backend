@@ -1,8 +1,10 @@
 // /service/ReservationService.java
 package com.md9.service;
 
+import com.md9.model.DisabledTimeSlot;
 import com.md9.model.Reservation;
 import com.md9.model.TimeSlot;
+import com.md9.repository.DisabledTimeSlotRepository;
 import com.md9.repository.ReservationRepository;
 import com.md9.repository.TimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,15 @@ public class ReservationService {
     @Autowired
     private final ReservationRepository reservationRepository;
     private final TimeSlotRepository timeSlotRepository;
+    @Autowired
+    private final DisabledTimeSlotRepository disabledTimeSlotRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, TimeSlotRepository timeSlotRepository) {
+    
+
+    public ReservationService(ReservationRepository reservationRepository, DisabledTimeSlotRepository disabledTimeSlotRepository, TimeSlotRepository timeSlotRepository) {
         this.reservationRepository = reservationRepository;
         this.timeSlotRepository = timeSlotRepository;
+        this.disabledTimeSlotRepository = disabledTimeSlotRepository;
     }
 
     // public Reservation createReservation(Reservation reservation) {
@@ -29,7 +36,10 @@ public class ReservationService {
     // }
 
     public Reservation createReservation(Reservation reservation) {
-        reservation.setConfirmationNo(generateConfirmationNumber());
+        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(null, reservation.getTimeSlotId(), reservation.getDate(), "reserved");
+        disabledTimeSlotRepository.save(disabledTimeSlot);
+
+        reservation.setConfirmationNo(generateConfirmationNumber().toString());
         reservation.setStatus("Pending");
         return reservationRepository.save(reservation);
     }
@@ -46,16 +56,16 @@ public class ReservationService {
     //     return reservationRepository.findByConfirmationNumber(confirmationNumber);
     // }
 
-    public void cancelReservation(Long id) {
+    public void cancelReservation(String id) {
         reservationRepository.deleteById(id);
     }
 
-    public List<Long> getAvailableTimeSlots(LocalDate date) {
+    public List<String> getAvailableTimeSlots(LocalDate date) {
         // Fetch all timeslots
         List<TimeSlot> allTimeslots = timeSlotRepository.findAll();
 
         // Fetch reserved timeslot IDs for the given date
-        List<Long> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
+        List<String> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
 
         // Filter available timeslots
         return allTimeslots.stream()

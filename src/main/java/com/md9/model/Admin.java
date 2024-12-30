@@ -8,14 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "admins")
 public class Admin {
     @Id
-    private Long adminId;
+    private String adminId;
     private String name;
     private String username;
     private String password;
     private String email;
 
     // Getters
-    public Long getId() {
+    public String getId() {
         return this.adminId;
     }
 
@@ -36,7 +36,7 @@ public class Admin {
     }
 
     // Setters
-    public void setId(Long adminId) {
+    public void setId(String adminId) {
         this.adminId = adminId;
     }
 

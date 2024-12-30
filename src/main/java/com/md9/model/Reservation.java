@@ -9,17 +9,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "reservations")
 public class Reservation {
     @Id
-    private Long reservationId;
+    private String reservationId;
     private String reserverName;
     private String mobile;
     private LocalDate date;
-    private Long timeSlotId;
+    private String timeSlotId;
     private String paymentMethod;
-    private Long confirmationNo;
+    private String confirmationNo;
     private String status;
 
     // Getters 
-    public Long getReservationId() {
+    public String getReservationId() {
         return this.reservationId;
     }
 
@@ -35,7 +35,7 @@ public class Reservation {
         return this.date;
     }
 
-    public Long getTimeSlot() {
+    public String getTimeSlotId() {
         return this.timeSlotId;
     }
 
@@ -43,7 +43,7 @@ public class Reservation {
         return this.paymentMethod;
     }
 
-    public Long getConfirmationNo() {
+    public String getConfirmationNo() {
         return this.confirmationNo;
     }
 
@@ -52,7 +52,7 @@ public class Reservation {
     }
 
     //Setters
-    public void setReservationId(Long reservationId) {
+    public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
     }
 
@@ -68,7 +68,7 @@ public class Reservation {
         this.date = date;
     }
 
-    public void setTimeSlot(Long timeSlotId) {
+    public void setTimeSlot(String timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 
@@ -76,7 +76,7 @@ public class Reservation {
         this.paymentMethod = paymentMethod;
     }
 
-    public void setConfirmationNo(Long confirmationNo) {
+    public void setConfirmationNo(String confirmationNo) {
         this.confirmationNo = confirmationNo;
     }
 
