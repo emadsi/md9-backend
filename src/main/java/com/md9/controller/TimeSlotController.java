@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/timeslots")
+@RequestMapping("/api/timeslots")
 public class TimeSlotController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class TimeSlotController {
     //Block TimeSlot
     @PostMapping("/block")
     public ResponseEntity<String> blockTimeSlots(
-            @RequestParam(required = true) String timeSlotId,
+            @RequestParam(required = true) int timeSlotId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         timeSlotService.blockTimeSlot(timeSlotId, date);
         return ResponseEntity.ok("Time slots blocked successfully.");

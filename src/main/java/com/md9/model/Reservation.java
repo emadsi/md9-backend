@@ -5,21 +5,30 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.*;
+
 
 @Document(collection = "reservations")
 public class Reservation {
     @Id
-    private String reservationId;
+    private Long reservationId;
+    @NotBlank(message = "Reserver name is required.")
     private String reserverName;
+    @Pattern(regexp = "^\\d{10}$", message = "Mobile number must be 10 digits.")
     private String mobile;
+    @NotNull(message = "Date is required.")
     private LocalDate date;
-    private String timeSlotId;
+    @NotNull(message = "Pick Time Slot.")
+    private int timeSlotId;
+    @NotBlank(message = "Payment method is required.")
     private String paymentMethod;
+    @NotNull(message = "Confirmation number is required.")
     private String confirmationNo;
+    @NotBlank(message = "Status is required.")
     private String status;
 
     // Getters 
-    public String getReservationId() {
+    public Long getReservationId() {
         return this.reservationId;
     }
 
@@ -35,7 +44,7 @@ public class Reservation {
         return this.date;
     }
 
-    public String getTimeSlotId() {
+    public int getTimeSlotId() {
         return this.timeSlotId;
     }
 
@@ -52,7 +61,7 @@ public class Reservation {
     }
 
     //Setters
-    public void setReservationId(String reservationId) {
+    public void setReservationId(Long reservationId) {
         this.reservationId = reservationId;
     }
 
@@ -68,7 +77,7 @@ public class Reservation {
         this.date = date;
     }
 
-    public void setTimeSlot(String timeSlotId) {
+    public void setTimeSlot(int timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 

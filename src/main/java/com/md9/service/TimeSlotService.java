@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TimeSlotService {
@@ -40,12 +38,12 @@ public class TimeSlotService {
 
         // Fetch existing time slots and add the new one in order
         List<TimeSlot> timeSlots = timeSlotRepository.findAll();
-        timeSlots.add(new TimeSlot(null, startTime, endTime, true));
+        timeSlots.add(new TimeSlot(timeSlots.size() + 1, startTime, endTime, true));
         timeSlots.sort((ts1, ts2) -> ts1.getStartTime().compareTo(ts2.getStartTime()));
 
         // Save updated time slots and update reservations
         for (int i = 0; i < timeSlots.size(); i++) {
-            timeSlots.get(i).setId(String.valueOf(i + 1));
+            timeSlots.get(i).setId(i + 1);
             timeSlotRepository.save(timeSlots.get(i));
         }
 
@@ -61,8 +59,8 @@ public class TimeSlotService {
     }
 
     @Transactional
-    public void blockTimeSlot(String timeSlotId, LocalDate date) {
-        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(null, timeSlotId, date, "blocked");
+    public void blockTimeSlot(int timeSlotId, LocalDate date) {
+        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(disabledTimeSlotRepository.findAll().size() + 1, timeSlotId, date, "blocked");
         disabledTimeSlotRepository.save(disabledTimeSlot);
     }
 
@@ -70,7 +68,7 @@ public class TimeSlotService {
     public void blockAllTimeSlots(LocalDate date) {
         List<TimeSlot> timeSlots = timeSlotRepository.findAll();
         for (TimeSlot timeSlot : timeSlots) {
-            DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(null, timeSlot.getId(), date, "blocked");
+            DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(disabledTimeSlotRepository.findAll().size() + 1, timeSlot.getId(), date, "blocked");
             disabledTimeSlotRepository.save(disabledTimeSlot);
         }
     }

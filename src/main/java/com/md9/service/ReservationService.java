@@ -36,7 +36,7 @@ public class ReservationService {
     // }
 
     public Reservation createReservation(Reservation reservation) {
-        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(null, reservation.getTimeSlotId(), reservation.getDate(), "reserved");
+        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(disabledTimeSlotRepository.findAll().size(), reservation.getTimeSlotId(), reservation.getDate(), "reserved");
         disabledTimeSlotRepository.save(disabledTimeSlot);
 
         reservation.setConfirmationNo(generateConfirmationNumber().toString());
@@ -60,12 +60,12 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public List<String> getAvailableTimeSlots(LocalDate date) {
+    public List<Integer> getAvailableTimeSlots(LocalDate date) {
         // Fetch all timeslots
         List<TimeSlot> allTimeslots = timeSlotRepository.findAll();
 
         // Fetch reserved timeslot IDs for the given date
-        List<String> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
+        List<Integer> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
 
         // Filter available timeslots
         return allTimeslots.stream()
