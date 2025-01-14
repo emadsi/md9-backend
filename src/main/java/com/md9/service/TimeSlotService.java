@@ -25,31 +25,33 @@ public class TimeSlotService {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    public TimeSlotService(TimeSlotRepository timeSlotRepository, DisabledTimeSlotRepository disabledTimeSlotRepository, ReservationRepository reservationRepository) {
-        this.timeSlotRepository = timeSlotRepository;
-        this.reservationRepository = reservationRepository;
-        this.disabledTimeSlotRepository = disabledTimeSlotRepository;
-    }
+    // public TimeSlotService(TimeSlotRepository timeSlotRepository, DisabledTimeSlotRepository disabledTimeSlotRepository, ReservationRepository reservationRepository) {
+    //     this.timeSlotRepository = timeSlotRepository;
+    //     this.reservationRepository = reservationRepository;
+    //     this.disabledTimeSlotRepository = disabledTimeSlotRepository;
+    // }
 
     @Transactional
     public void addTimeSlot(String from, String to) {
         LocalTime startTime = LocalTime.parse(from);
         LocalTime endTime = LocalTime.parse(to);
+       
 
         // Fetch existing time slots and add the new one in order
         List<TimeSlot> timeSlots = timeSlotRepository.findAll();
-        timeSlots.add(new TimeSlot(timeSlots.size() + 1, startTime, endTime, true));
+        Integer timeSlotsLength = timeSlots.size();
+        timeSlots.add(new TimeSlot((timeSlotsLength).toString(), startTime, endTime, true));
         timeSlots.sort((ts1, ts2) -> ts1.getStartTime().compareTo(ts2.getStartTime()));
 
         // Save updated time slots and update reservations
         for (int i = 0; i < timeSlots.size(); i++) {
-            timeSlots.get(i).setId(i + 1);
+            timeSlots.get(i).setId(String.format("%d", i + 1));
             timeSlotRepository.save(timeSlots.get(i));
         }
 
         // Update reservations collection
         for (int i = 0; i < timeSlots.size(); i++) {
-            reservationRepository.updateTimeSlotIds(timeSlots.get(i).getId(), i + 1);
+            reservationRepository.updateTimeSlotIds(timeSlots.get(i).getId(), String.format("%d", i + 1));
         }
 
         // for (int i = 0; i < timeSlots.size(); i++) {
@@ -59,8 +61,8 @@ public class TimeSlotService {
     }
 
     @Transactional
-    public void blockTimeSlot(int timeSlotId, LocalDate date) {
-        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(disabledTimeSlotRepository.findAll().size() + 1, timeSlotId, date, "blocked");
+    public void blockTimeSlot(String timeSlotId, LocalDate date) {
+        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(String.format("%d", disabledTimeSlotRepository.findAll().size() + 1), timeSlotId, date, "blocked");
         disabledTimeSlotRepository.save(disabledTimeSlot);
     }
 
@@ -68,7 +70,7 @@ public class TimeSlotService {
     public void blockAllTimeSlots(LocalDate date) {
         List<TimeSlot> timeSlots = timeSlotRepository.findAll();
         for (TimeSlot timeSlot : timeSlots) {
-            DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(disabledTimeSlotRepository.findAll().size() + 1, timeSlot.getId(), date, "blocked");
+            DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(String.format("%d", disabledTimeSlotRepository.findAll().size() + 1), timeSlot.getId(), date, "blocked");
             disabledTimeSlotRepository.save(disabledTimeSlot);
         }
     }

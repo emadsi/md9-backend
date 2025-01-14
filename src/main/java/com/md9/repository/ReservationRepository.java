@@ -16,8 +16,8 @@ public interface ReservationRepository extends MongoRepository<Reservation, Stri
     // @Query("SELECT r.timeSlot FROM Reservation r WHERE r.date = :date")
     // List<String> findReservedTimeSlotsByDate(@Param("date") LocalDate date);
     @Query("SELECT r.timeslot.id FROM Reservation r WHERE r.date = :date")
-    List<Integer> findReservedTimeslotIdsByDate(@Param("date") LocalDate date);
+    List<String> findReservedTimeslotIdsByDate(@Param("date") LocalDate date);
 
     @Query("{ 'timeSlotId': ?0 }")
-    void updateTimeSlotIds(int oldTimeSlotId, int newTimeSlotId);
+    void updateTimeSlotIds(String oldTimeSlotId, String newTimeSlotId);
 }

@@ -11,7 +11,7 @@ import jakarta.validation.constraints.*;
 @Document(collection = "reservations")
 public class Reservation {
     @Id
-    private Long reservationId;
+    private String reservationId;
     @NotBlank(message = "Reserver name is required.")
     private String reserverName;
     @Pattern(regexp = "^\\d{10}$", message = "Mobile number must be 10 digits.")
@@ -19,7 +19,7 @@ public class Reservation {
     @NotNull(message = "Date is required.")
     private LocalDate date;
     @NotNull(message = "Pick Time Slot.")
-    private int timeSlotId;
+    private String timeSlotId;
     @NotBlank(message = "Payment method is required.")
     private String paymentMethod;
     @NotNull(message = "Confirmation number is required.")
@@ -28,7 +28,7 @@ public class Reservation {
     private String status;
 
     // Getters 
-    public Long getReservationId() {
+    public String getReservationId() {
         return this.reservationId;
     }
 
@@ -44,7 +44,7 @@ public class Reservation {
         return this.date;
     }
 
-    public int getTimeSlotId() {
+    public String getTimeSlotId() {
         return this.timeSlotId;
     }
 
@@ -61,7 +61,7 @@ public class Reservation {
     }
 
     //Setters
-    public void setReservationId(Long reservationId) {
+    public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
     }
 
@@ -77,7 +77,7 @@ public class Reservation {
         this.date = date;
     }
 
-    public void setTimeSlot(int timeSlotId) {
+    public void setTimeSlot(String timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 

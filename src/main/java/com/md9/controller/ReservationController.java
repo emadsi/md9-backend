@@ -40,8 +40,8 @@ public class ReservationController {
     }
 
     @GetMapping("/available-slots")
-    public ResponseEntity<List<Integer>> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        List<Integer> availableSlots = reservationService.getAvailableTimeSlots(date);
+    public ResponseEntity<List<String>> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<String> availableSlots = reservationService.getAvailableTimeSlots(date);
         return ResponseEntity.ok(availableSlots);
     }
 }

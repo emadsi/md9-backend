@@ -35,7 +35,7 @@ public class TimeSlotController {
     //Block TimeSlot
     @PostMapping("/block")
     public ResponseEntity<String> blockTimeSlots(
-            @RequestParam(required = true) int timeSlotId,
+            @RequestParam(required = true) String timeSlotId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         timeSlotService.blockTimeSlot(timeSlotId, date);
         return ResponseEntity.ok("Time slots blocked successfully.");

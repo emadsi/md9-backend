@@ -8,12 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collation = "disabledTimeslot")
 public class DisabledTimeSlot {
      @Id
-    private int id;
-    private LocalDate date; // The date this time slot is disabled/reserved
+    private String id;
+    private LocalDate date; // The date this time slot is disabled or reserved
     private String reason; // Either "blocked" or "reserved"
-    private int timeSlotId;
+    private String timeSlotId;
 
-    public DisabledTimeSlot(int id, int timeSlotId, LocalDate date, String reason) {
+    public DisabledTimeSlot(String id, String timeSlotId, LocalDate date, String reason) {
         this.id = id;
         this.timeSlotId = timeSlotId;
         this.date = date;
@@ -21,11 +21,11 @@ public class DisabledTimeSlot {
     }
 
     // Getters and Setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -45,11 +45,11 @@ public class DisabledTimeSlot {
         this.reason = reason;
     }
 
-    public int timeSlotId() {
+    public String getTimeSlotId() {
         return timeSlotId;
     }
 
-    public void setTimeSlotId(int timeSlotId) {
+    public void setTimeSlotId(String timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 }

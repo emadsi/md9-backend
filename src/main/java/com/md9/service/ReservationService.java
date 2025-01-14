@@ -18,28 +18,33 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     @Autowired
-    private final ReservationRepository reservationRepository;
-    private final TimeSlotRepository timeSlotRepository;
+    private ReservationRepository reservationRepository;
+
     @Autowired
-    private final DisabledTimeSlotRepository disabledTimeSlotRepository;
+    private TimeSlotRepository timeSlotRepository;
+
+    @Autowired
+    private DisabledTimeSlotRepository disabledTimeSlotRepository;
 
     
 
-    public ReservationService(ReservationRepository reservationRepository, DisabledTimeSlotRepository disabledTimeSlotRepository, TimeSlotRepository timeSlotRepository) {
-        this.reservationRepository = reservationRepository;
-        this.timeSlotRepository = timeSlotRepository;
-        this.disabledTimeSlotRepository = disabledTimeSlotRepository;
-    }
+    // public ReservationService(ReservationRepository reservationRepository, DisabledTimeSlotRepository disabledTimeSlotRepository, TimeSlotRepository timeSlotRepository) {
+    //     this.reservationRepository = reservationRepository;
+    //     this.timeSlotRepository = timeSlotRepository;
+    //     this.disabledTimeSlotRepository = disabledTimeSlotRepository;
+    // }
 
     // public Reservation createReservation(Reservation reservation) {
     //     return reservationRepository.save(reservation);
     // }
 
     public Reservation createReservation(Reservation reservation) {
-        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(disabledTimeSlotRepository.findAll().size(), reservation.getTimeSlotId(), reservation.getDate(), "reserved");
+        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(String.format("%d", disabledTimeSlotRepository.findAll().size()), reservation.getTimeSlotId(), reservation.getDate(), "reserved");
         disabledTimeSlotRepository.save(disabledTimeSlot);
 
+        //confirmation Number to be replaced with CreditCard Confirmation Number
         reservation.setConfirmationNo(generateConfirmationNumber().toString());
+
         reservation.setStatus("Pending");
         return reservationRepository.save(reservation);
     }
@@ -60,12 +65,12 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public List<Integer> getAvailableTimeSlots(LocalDate date) {
+    public List<String> getAvailableTimeSlots(LocalDate date) {
         // Fetch all timeslots
         List<TimeSlot> allTimeslots = timeSlotRepository.findAll();
 
         // Fetch reserved timeslot IDs for the given date
-        List<Integer> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
+        List<String> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
 
         // Filter available timeslots
         return allTimeslots.stream()

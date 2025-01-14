@@ -17,7 +17,7 @@ public interface TimeSlotRepository extends MongoRepository<TimeSlot, String> {
     List<TimeSlot> findAll();
 
     @Query("{ '_id': ?0 }")
-    void blockSpecificOnDate(int timeSlotId, LocalDate date);
+    void blockSpecificOnDate(String timeSlotId, LocalDate date);
 
     @Query("{ }")
     void blockAllOnDate(LocalDate date);

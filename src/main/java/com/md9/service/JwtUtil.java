@@ -5,19 +5,34 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
+
+import javax.crypto.spec.SecretKeySpec;
 
 @Component
 public class JwtUtil {
 
     private static final String SECRET_KEY = "wesamkh";
 
+    // public String generateToken(String username) {
+    //     return Jwts.builder()
+    //             .setSubject(username)
+    //             .setIssuedAt(new Date())
+    //             .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
+    //             .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes())
+    //             .compact();
+    // }
+    private Key getSigningKey() {
+        return new SecretKeySpec(SECRET_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+    }
+
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes())
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 

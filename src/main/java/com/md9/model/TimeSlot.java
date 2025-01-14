@@ -9,14 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "timeslots")
 public class TimeSlot {
     @Id
-    private int id;
+    private String id;
     private LocalTime startTime;
     private LocalTime endTime;
     // private boolean available;
     // private LocalDate blockDate;
 
     //constructors
-    public TimeSlot(int id, LocalTime startTime, LocalTime endTime, boolean available) {
+    public TimeSlot(String id, LocalTime startTime, LocalTime endTime, boolean available) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -26,11 +26,11 @@ public class TimeSlot {
     public TimeSlot() {}
 
     // Getters and Setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

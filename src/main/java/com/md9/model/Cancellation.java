@@ -8,17 +8,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "cancellations")
 public class Cancellation {
     @Id
-    private int cancellationId;
-    private Long reservationId;
+    private String cancellationId;
+    private String reservationId;
     private String cancelledBy; // "User" or Admin Name
 
     // Getters 
 
-    public int getCancellationId() {
+    public String getCancellationId() {
         return cancellationId;
     }
 
-    public Long getReservationId() {
+    public String getReservationId() {
         return reservationId;
     }
 
@@ -27,11 +27,11 @@ public class Cancellation {
     }
     // Setters
 
-    public void setCancellationId(int cancellationId) {
+    public void setCancellationId(String cancellationId) {
         this.cancellationId = cancellationId;
     }
 
-    public void setReservationId(Long reservationId) {
+    public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
     }
 
