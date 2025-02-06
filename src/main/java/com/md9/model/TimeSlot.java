@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "timeslots")
-public class TimeSlot {
+public class Timeslot {
     @Id
     private String id;
     private LocalTime startTime;
@@ -16,14 +16,14 @@ public class TimeSlot {
     // private LocalDate blockDate;
 
     //constructors
-    public TimeSlot(String id, LocalTime startTime, LocalTime endTime, boolean available) {
+    public Timeslot(String id, LocalTime startTime, LocalTime endTime, boolean available) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         // this.available = available; Getters & Setters required
         // this.blockDate = blockDate; Getters & Setters required
     }
-    public TimeSlot() {}
+    public Timeslot() {}
 
     // Getters and Setters
     public String getId() {

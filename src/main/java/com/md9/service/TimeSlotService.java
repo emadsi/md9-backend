@@ -1,8 +1,8 @@
 package com.md9.service;
 
-import com.md9.model.DisabledTimeSlot;
-import com.md9.model.TimeSlot;
-import com.md9.repository.DisabledTimeSlotRepository;
+import com.md9.model.DisabledTimeslot;
+import com.md9.model.Timeslot;
+import com.md9.repository.DisabledTimeslotRepository;
 import com.md9.repository.ReservationRepository;
 import com.md9.repository.TimeSlotRepository;
 
@@ -15,17 +15,17 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Service
-public class TimeSlotService {
+public class TimeslotService {
     @Autowired
     private TimeSlotRepository timeSlotRepository;
 
     @Autowired
-    private DisabledTimeSlotRepository disabledTimeSlotRepository;
+    private DisabledTimeslotRepository disabledTimeslotRepository;
 
     @Autowired
     private ReservationRepository reservationRepository;
 
-    // public TimeSlotService(TimeSlotRepository timeSlotRepository, DisabledTimeSlotRepository disabledTimeSlotRepository, ReservationRepository reservationRepository) {
+    // public TimeslotService(TimeSlotRepository timeSlotRepository, DisabledTimeslotRepository disabledTimeSlotRepository, ReservationRepository reservationRepository) {
     //     this.timeSlotRepository = timeSlotRepository;
     //     this.reservationRepository = reservationRepository;
     //     this.disabledTimeSlotRepository = disabledTimeSlotRepository;
@@ -38,9 +38,9 @@ public class TimeSlotService {
        
 
         // Fetch existing time slots and add the new one in order
-        List<TimeSlot> timeSlots = timeSlotRepository.findAll();
+        List<Timeslot> timeSlots = timeSlotRepository.findAll();
         Integer timeSlotsLength = timeSlots.size();
-        timeSlots.add(new TimeSlot((timeSlotsLength).toString(), startTime, endTime, true));
+        timeSlots.add(new Timeslot((timeSlotsLength).toString(), startTime, endTime, true));
         timeSlots.sort((ts1, ts2) -> ts1.getStartTime().compareTo(ts2.getStartTime()));
 
         // Save updated time slots and update reservations
@@ -62,22 +62,22 @@ public class TimeSlotService {
 
     @Transactional
     public void blockTimeSlot(String timeSlotId, LocalDate date) {
-        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(String.format("%d", disabledTimeSlotRepository.findAll().size() + 1), timeSlotId, date, "blocked");
-        disabledTimeSlotRepository.save(disabledTimeSlot);
+        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlotId, date, "blocked");
+        disabledTimeslotRepository.save(disabledTimeslot);
     }
 
     @Transactional
     public void blockAllTimeSlots(LocalDate date) {
-        List<TimeSlot> timeSlots = timeSlotRepository.findAll();
-        for (TimeSlot timeSlot : timeSlots) {
-            DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(String.format("%d", disabledTimeSlotRepository.findAll().size() + 1), timeSlot.getId(), date, "blocked");
-            disabledTimeSlotRepository.save(disabledTimeSlot);
+        List<Timeslot> timeSlots = timeSlotRepository.findAll();
+        for (Timeslot timeSlot : timeSlots) {
+            DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlot.getId(), date, "blocked");
+            disabledTimeslotRepository.save(disabledTimeslot);
         }
     }
 
     // Fetch all time slots
     @Transactional
-    public List<TimeSlot> getAllTimeSlots() {
+    public List<Timeslot> getAllTimeSlots() {
         return timeSlotRepository.findAll();
     }
 
@@ -86,32 +86,4 @@ public class TimeSlotService {
     public void deleteTimeSlot(String id) {
         timeSlotRepository.deleteById(id);
     }
-
-    // // Fetch time slots by availability
-    // public List<TimeSlot> getAvailableTimeSlots(boolean available) {
-    //     return timeSlotRepository.findByAvailable(available);
-    // }
-
-    //  // Fetch time slots within a date range
-    // public List<TimeSlot> getTimeSlotsBetween(LocalDateTime start, LocalDateTime end) {
-    //     return timeSlotRepository.findByStartTimeBetween(start, end);
-    // }
-
-    // // Create or update a time slot
-    // public TimeSlot saveTimeSlot(TimeSlot timeSlot) {
-    //     return timeSlotRepository.save(timeSlot);
-    // }
-
-    // public TimeSlot updateTimeSlot(String id, TimeSlot updatedTimeSlot) {
-    //     return timeSlotRepository.findById(id).map(existing -> {
-    //         existing.setStartTime(updatedTimeSlot.getStartTime());
-    //         existing.setEndTime(updatedTimeSlot.getEndTime());
-    //         return timeSlotRepository.save(existing);
-    //     }).orElseThrow(() -> new RuntimeException("TimeSlot not found"));
-    // }
-
-    // // Fetch a single time slot by ID
-    // public Optional<TimeSlot> getTimeSlotById(String id) {
-    //     return timeSlotRepository.findById(id);
-    // }
 }

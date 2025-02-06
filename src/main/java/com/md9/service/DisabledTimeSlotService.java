@@ -1,7 +1,7 @@
 package com.md9.service;
 
-import com.md9.model.DisabledTimeSlot;
-import com.md9.repository.DisabledTimeSlotRepository;
+import com.md9.model.DisabledTimeslot;
+import com.md9.repository.DisabledTimeslotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,44 +10,44 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DisabledTimeSlotService {
+public class DisabledTimeslotService {
     @Autowired
-    private DisabledTimeSlotRepository disabledTimeSlotRepository;
+    private DisabledTimeslotRepository disabledTimeSlotRepository;
 
-    public List<DisabledTimeSlot> getDisabledTimeSlotsByDate(LocalDate date) {
+    public List<DisabledTimeslot> getDisabledTimeslotsByDate(LocalDate date) {
         return disabledTimeSlotRepository.findByDate(date);
     }
 
-    public DisabledTimeSlot addDisabledTimeSlot(DisabledTimeSlot disabledTimeSlot) {
-        return disabledTimeSlotRepository.save(disabledTimeSlot);
+    public DisabledTimeslot addDisabledTimeslot(DisabledTimeslot disabledTimeslot) {
+        return disabledTimeSlotRepository.save(disabledTimeslot);
     }
 
-    public List<DisabledTimeSlot> getAllDisabledTimeSlots() {
+    public List<DisabledTimeslot> getAllDisabledTimeslots() {
         return disabledTimeSlotRepository.findAll();
     }
 
-    public Optional<DisabledTimeSlot> getDisabledTimeSlotById(String id) {
+    public Optional<DisabledTimeslot> getDisabledTimeslotById(String id) {
         return disabledTimeSlotRepository.findById(id);
     }
 
-    public DisabledTimeSlot updateDisabledTimeSlot(String id, DisabledTimeSlot updatedTimeSlot) {
-        Optional<DisabledTimeSlot> optionalSlot = disabledTimeSlotRepository.findById(id);
+    public DisabledTimeslot updateDisabledTimeslot(String id, DisabledTimeslot updatedTimeSlot) {
+        Optional<DisabledTimeslot> optionalSlot = disabledTimeSlotRepository.findById(id);
     
         if (optionalSlot.isPresent()) {
-            DisabledTimeSlot slot = optionalSlot.get();
+            DisabledTimeslot slot = optionalSlot.get();
             slot.setTimeSlotId(updatedTimeSlot.getTimeSlotId());
             slot.setReason(updatedTimeSlot.getReason());
             return disabledTimeSlotRepository.save(slot);
         } else {
-            throw new RuntimeException("TimeSlot not found with id: " + id);
+            throw new RuntimeException("Timeslot not found with id: " + id);
         }
     }
 
-    public void deleteDisabledTimeSlot(String id) {
+    public void deleteDisabledTimeslot(String id) {
         disabledTimeSlotRepository.deleteById(id);
     }
 
-    public List<DisabledTimeSlot> getTimeSlotsByReason(String reason) {
+    public List<DisabledTimeslot> getTimeSlotsByReason(String reason) {
         return disabledTimeSlotRepository.findByReason(reason);
     }
 }

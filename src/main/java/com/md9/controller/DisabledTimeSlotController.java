@@ -1,7 +1,7 @@
 package com.md9.controller;
 
-import com.md9.model.DisabledTimeSlot;
-import com.md9.service.DisabledTimeSlotService;
+import com.md9.model.DisabledTimeslot;
+import com.md9.service.DisabledTimeslotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,51 +11,51 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/disabledTimeSlots")
-public class DisabledTimeSlotController {
+@RequestMapping("/api/disabledTimeslots")
+public class DisabledTimeslotController {
     @Autowired
-    private DisabledTimeSlotService disabledTimeSlotService;
+    private DisabledTimeslotService disabledTimeslotService;
 
     @GetMapping
-    public List<DisabledTimeSlot> getAllDisabledTimeSlots() {
-        return disabledTimeSlotService.getAllDisabledTimeSlots();
+    public List<DisabledTimeslot> getAllDisabledTimeslots() {
+        return disabledTimeslotService.getAllDisabledTimeslots();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DisabledTimeSlot> getDisabledTimeSlotById(@PathVariable String id) {
-        Optional<DisabledTimeSlot> timeSlot = disabledTimeSlotService.getDisabledTimeSlotById(id);
+    public ResponseEntity<DisabledTimeslot> getDisabledTimeslotById(@PathVariable String id) {
+        Optional<DisabledTimeslot> timeSlot = disabledTimeslotService.getDisabledTimeslotById(id);
         return timeSlot.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{date}")
-    public List<DisabledTimeSlot> getDisabledTimeSlots(@PathVariable LocalDate date) {
-        return disabledTimeSlotService.getDisabledTimeSlotsByDate(date);
+    public List<DisabledTimeslot> getDisabledTimeslots(@PathVariable LocalDate date) {
+        return disabledTimeslotService.getDisabledTimeslotsByDate(date);
     }
 
     @PostMapping
-    public DisabledTimeSlot addDisabledTimeSlot(@RequestBody DisabledTimeSlot disabledTimeSlot) {
-        return disabledTimeSlotService.addDisabledTimeSlot(disabledTimeSlot);
+    public DisabledTimeslot addDisabledTimeslot(@RequestBody DisabledTimeslot disabledTimeslot) {
+        return disabledTimeslotService.addDisabledTimeslot(disabledTimeslot);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DisabledTimeSlot> updateDisabledTimeSlot(
-            @PathVariable String id, @RequestBody DisabledTimeSlot updatedTimeSlot) {
+    public ResponseEntity<DisabledTimeslot> updateDisabledTimeslot(
+            @PathVariable String id, @RequestBody DisabledTimeslot updatedTimeSlot) {
         try {
-            return ResponseEntity.ok(disabledTimeSlotService.updateDisabledTimeSlot(id, updatedTimeSlot));
+            return ResponseEntity.ok(disabledTimeslotService.updateDisabledTimeslot(id, updatedTimeSlot));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDisabledTimeSlot(@PathVariable String id) {
-        disabledTimeSlotService.deleteDisabledTimeSlot(id);
+    public ResponseEntity<Void> deleteDisabledTimeslot(@PathVariable String id) {
+        disabledTimeslotService.deleteDisabledTimeslot(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/reason/{reason}")
-    public List<DisabledTimeSlot> getTimeSlotsByReason(@PathVariable String reason) {
-        return disabledTimeSlotService.getTimeSlotsByReason(reason);
+    public List<DisabledTimeslot> getTimeSlotsByReason(@PathVariable String reason) {
+        return disabledTimeslotService.getTimeSlotsByReason(reason);
     }
 }

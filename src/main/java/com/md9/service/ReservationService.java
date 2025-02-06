@@ -1,10 +1,10 @@
 // /service/ReservationService.java
 package com.md9.service;
 
-import com.md9.model.DisabledTimeSlot;
+import com.md9.model.DisabledTimeslot;
 import com.md9.model.Reservation;
-import com.md9.model.TimeSlot;
-import com.md9.repository.DisabledTimeSlotRepository;
+import com.md9.model.Timeslot;
+import com.md9.repository.DisabledTimeslotRepository;
 import com.md9.repository.ReservationRepository;
 import com.md9.repository.TimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +24,11 @@ public class ReservationService {
     private TimeSlotRepository timeSlotRepository;
 
     @Autowired
-    private DisabledTimeSlotRepository disabledTimeSlotRepository;
+    private DisabledTimeslotRepository disabledTimeSlotRepository;
 
     
 
-    // public ReservationService(ReservationRepository reservationRepository, DisabledTimeSlotRepository disabledTimeSlotRepository, TimeSlotRepository timeSlotRepository) {
+    // public ReservationService(ReservationRepository reservationRepository, DisabledTimeslotRepository disabledTimeSlotRepository, TimeSlotRepository timeSlotRepository) {
     //     this.reservationRepository = reservationRepository;
     //     this.timeSlotRepository = timeSlotRepository;
     //     this.disabledTimeSlotRepository = disabledTimeSlotRepository;
@@ -39,8 +39,8 @@ public class ReservationService {
     // }
 
     public Reservation createReservation(Reservation reservation) {
-        DisabledTimeSlot disabledTimeSlot = new DisabledTimeSlot(String.format("%d", disabledTimeSlotRepository.findAll().size()), reservation.getTimeSlotId(), reservation.getDate(), "reserved");
-        disabledTimeSlotRepository.save(disabledTimeSlot);
+        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeSlotRepository.findAll().size()), reservation.getTimeSlotId(), reservation.getDate(), "reserved");
+        disabledTimeSlotRepository.save(disabledTimeslot);
 
         //confirmation Number to be replaced with CreditCard Confirmation Number
         reservation.setConfirmationNo(generateConfirmationNumber().toString());
@@ -67,7 +67,7 @@ public class ReservationService {
 
     public List<String> getAvailableTimeSlots(LocalDate date) {
         // Fetch all timeslots
-        List<TimeSlot> allTimeslots = timeSlotRepository.findAll();
+        List<Timeslot> allTimeslots = timeSlotRepository.findAll();
 
         // Fetch reserved timeslot IDs for the given date
         List<String> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
@@ -75,7 +75,7 @@ public class ReservationService {
         // Filter available timeslots
         return allTimeslots.stream()
                 .filter(timeslot -> !reservedTimeslotIds.contains(timeslot.getId()))
-                .map(TimeSlot::getId)
+                .map(Timeslot::getId)
                 .collect(Collectors.toList());
     }
 }

@@ -6,14 +6,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collation = "disabledTimeslot")
-public class DisabledTimeSlot {
+public class DisabledTimeslot {
      @Id
     private String id;
     private LocalDate date; // The date this time slot is disabled or reserved
     private String reason; // Either "blocked" or "reserved"
     private String timeSlotId;
 
-    public DisabledTimeSlot(String id, String timeSlotId, LocalDate date, String reason) {
+    public DisabledTimeslot(String id, String timeSlotId, LocalDate date, String reason) {
         this.id = id;
         this.timeSlotId = timeSlotId;
         this.date = date;

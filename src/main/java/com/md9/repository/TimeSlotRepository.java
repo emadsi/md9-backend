@@ -1,6 +1,6 @@
 package com.md9.repository;
 
-import com.md9.model.TimeSlot;
+import com.md9.model.Timeslot;
 
 import java.time.LocalDate;
 // import java.time.LocalDateTime;
@@ -11,10 +11,10 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TimeSlotRepository extends MongoRepository<TimeSlot, String> {
+public interface TimeslotRepository extends MongoRepository<Timeslot, String> {
 
     @Query("{ }")
-    List<TimeSlot> findAll();
+    List<Timeslot> findAll();
 
     @Query("{ '_id': ?0 }")
     void blockSpecificOnDate(String timeSlotId, LocalDate date);
@@ -22,7 +22,7 @@ public interface TimeSlotRepository extends MongoRepository<TimeSlot, String> {
     @Query("{ }")
     void blockAllOnDate(LocalDate date);
 
-    // List<TimeSlot> findByAvailable(boolean available);
+    // List<Timeslot> findByAvailable(boolean available);
 
-    // List<TimeSlot> findByStartTimeBetween(LocalDateTime start, LocalDateTime end);
+    // List<Timeslot> findByStartTimeBetween(LocalDateTime start, LocalDateTime end);
 }
