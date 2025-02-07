@@ -19,7 +19,7 @@ public class Reservation {
     @NotNull(message = "Date is required.")
     private LocalDate date;
     @NotNull(message = "Pick Time Slot.")
-    private String timeSlotId;
+    private String timeslotId;
     @NotBlank(message = "Payment method is required.")
     private String paymentMethod;
     @NotNull(message = "Confirmation number is required.")
@@ -45,7 +45,7 @@ public class Reservation {
     }
 
     public String getTimeSlotId() {
-        return this.timeSlotId;
+        return this.timeslotId;
     }
 
     public String getPaymentMethod() {
@@ -77,8 +77,8 @@ public class Reservation {
         this.date = date;
     }
 
-    public void setTimeSlot(String timeSlotId) {
-        this.timeSlotId = timeSlotId;
+    public void setTimeSlot(String timeslotId) {
+        this.timeslotId = timeslotId;
     }
 
     public void setPaymentMethod(String paymentMethod) {

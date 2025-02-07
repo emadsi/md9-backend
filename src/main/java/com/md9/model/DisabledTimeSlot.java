@@ -11,11 +11,11 @@ public class DisabledTimeslot {
     private String id;
     private LocalDate date; // The date this time slot is disabled or reserved
     private String reason; // Either "blocked" or "reserved"
-    private String timeSlotId;
+    private String timeslotId;
 
-    public DisabledTimeslot(String id, String timeSlotId, LocalDate date, String reason) {
+    public DisabledTimeslot(String id, String timeslotId, LocalDate date, String reason) {
         this.id = id;
-        this.timeSlotId = timeSlotId;
+        this.timeslotId = timeslotId;
         this.date = date;
         this.reason = reason;
     }
@@ -46,10 +46,10 @@ public class DisabledTimeslot {
     }
 
     public String getTimeSlotId() {
-        return timeSlotId;
+        return timeslotId;
     }
 
-    public void setTimeSlotId(String timeSlotId) {
-        this.timeSlotId = timeSlotId;
+    public void setTimeSlotId(String timeslotId) {
+        this.timeslotId = timeslotId;
     }
 }

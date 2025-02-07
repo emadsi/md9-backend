@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-// import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,17 +26,18 @@ public class TimeslotController {
     @PostMapping("/add")
     public ResponseEntity<String> addTimeSlot(
             @RequestParam String from,
-            @RequestParam String to) {
-        timeslotService.addTimeSlot(from, to);
+            @RequestParam String to,
+            @RequestParam String fieldId) {
+        timeslotService.addTimeSlot(from, to, fieldId);
         return ResponseEntity.ok("Time slot added successfully.");
     }
 
     //Block Timeslot
     @PostMapping("/block")
     public ResponseEntity<String> blockTimeSlots(
-            @RequestParam(required = true) String timeSlotId,
+            @RequestParam(required = true) String timeslotId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        timeslotService.blockTimeSlot(timeSlotId, date);
+        timeslotService.blockTimeSlot(timeslotId, date);
         return ResponseEntity.ok("Time slots blocked successfully.");
     }
 

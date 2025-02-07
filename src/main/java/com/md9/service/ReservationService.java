@@ -6,7 +6,7 @@ import com.md9.model.Reservation;
 import com.md9.model.Timeslot;
 import com.md9.repository.DisabledTimeslotRepository;
 import com.md9.repository.ReservationRepository;
-import com.md9.repository.TimeSlotRepository;
+import com.md9.repository.TimeslotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,14 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
 
     @Autowired
-    private TimeSlotRepository timeSlotRepository;
+    private TimeslotRepository timeSlotRepository;
 
     @Autowired
     private DisabledTimeslotRepository disabledTimeSlotRepository;
 
     
 
-    // public ReservationService(ReservationRepository reservationRepository, DisabledTimeslotRepository disabledTimeSlotRepository, TimeSlotRepository timeSlotRepository) {
+    // public ReservationService(ReservationRepository reservationRepository, DisabledTimeslotRepository disabledTimeSlotRepository, TimeslotRepository timeSlotRepository) {
     //     this.reservationRepository = reservationRepository;
     //     this.timeSlotRepository = timeSlotRepository;
     //     this.disabledTimeSlotRepository = disabledTimeSlotRepository;

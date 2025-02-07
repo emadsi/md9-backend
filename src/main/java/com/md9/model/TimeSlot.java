@@ -12,16 +12,14 @@ public class Timeslot {
     private String id;
     private LocalTime startTime;
     private LocalTime endTime;
-    // private boolean available;
-    // private LocalDate blockDate;
+    private String fieldId;
 
     //constructors
-    public Timeslot(String id, LocalTime startTime, LocalTime endTime, boolean available) {
+    public Timeslot(String id, LocalTime startTime, LocalTime endTime, String fieldId) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        // this.available = available; Getters & Setters required
-        // this.blockDate = blockDate; Getters & Setters required
+        this.fieldId = fieldId;
     }
     public Timeslot() {}
 
@@ -48,5 +46,13 @@ public class Timeslot {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+    }
+
+    public String getFieldId() {
+        return this.fieldId;
+    }
+
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
     }
 }

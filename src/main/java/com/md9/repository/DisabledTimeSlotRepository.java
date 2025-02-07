@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface DisabledTimeslotRepository extends MongoRepository<DisabledTimeslot, String> {
     List<DisabledTimeslot> findByDate(LocalDate date);
-    List<DisabledTimeslot> findByTimeSlotIdAndDate(String timeSlotId, LocalDate date);
+    List<DisabledTimeslot> findByTimeSlotIdAndDate(String timeslotId, LocalDate date);
     // List<DisabledTimeslot> getAllDisabledTimeslots();
     List<DisabledTimeslot> findByReason(String reason);
 }
