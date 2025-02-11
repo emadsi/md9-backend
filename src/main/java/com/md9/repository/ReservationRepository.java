@@ -13,11 +13,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservationRepository extends MongoRepository<Reservation, String> {
     
-    // @Query("SELECT r.timeSlot FROM Reservation r WHERE r.date = :date")
-    // List<String> findReservedTimeSlotsByDate(@Param("date") LocalDate date);
+    // @Query("SELECT r.timeslot FROM Reservation r WHERE r.date = :date")
+    // List<String> findReservedTimeslotsByDate(@Param("date") LocalDate date);
     @Query("SELECT r.timeslot.id FROM Reservation r WHERE r.date = :date")
     List<String> findReservedTimeslotIdsByDate(@Param("date") LocalDate date);
 
     @Query("{ 'timeslotId': ?0 }")
-    void updateTimeSlotIds(String oldTimeSlotId, String newTimeSlotId);
+    void updateTimeslotIds(String oldTimeslotId, String newTimeslotId);
 }

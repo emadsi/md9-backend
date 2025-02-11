@@ -24,5 +24,5 @@ public interface CancellationRepository extends MongoRepository<Cancellation, St
 
     // Custom query to fetch cancellations within a date range
     // @Query("{ 'cancellationDate': { $gte: ?0, $lte: ?1 } }")
-    // List<Cancellation> findCancellationsWithTimeSlotId(Lo startDate, Date endDate);
+    // List<Cancellation> findCancellationsWithTimeslotId(Lo startDate, Date endDate);
 }

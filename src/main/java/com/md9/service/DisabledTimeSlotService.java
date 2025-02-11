@@ -12,42 +12,42 @@ import java.util.Optional;
 @Service
 public class DisabledTimeslotService {
     @Autowired
-    private DisabledTimeslotRepository disabledTimeSlotRepository;
+    private DisabledTimeslotRepository disabledTimeslotRepository;
 
     public List<DisabledTimeslot> getDisabledTimeslotsByDate(LocalDate date) {
-        return disabledTimeSlotRepository.findByDate(date);
+        return disabledTimeslotRepository.findByDate(date);
     }
 
     public DisabledTimeslot addDisabledTimeslot(DisabledTimeslot disabledTimeslot) {
-        return disabledTimeSlotRepository.save(disabledTimeslot);
+        return disabledTimeslotRepository.save(disabledTimeslot);
     }
 
     public List<DisabledTimeslot> getAllDisabledTimeslots() {
-        return disabledTimeSlotRepository.findAll();
+        return disabledTimeslotRepository.findAll();
     }
 
     public Optional<DisabledTimeslot> getDisabledTimeslotById(String id) {
-        return disabledTimeSlotRepository.findById(id);
+        return disabledTimeslotRepository.findById(id);
     }
 
-    public DisabledTimeslot updateDisabledTimeslot(String id, DisabledTimeslot updatedTimeSlot) {
-        Optional<DisabledTimeslot> optionalSlot = disabledTimeSlotRepository.findById(id);
+    public DisabledTimeslot updateDisabledTimeslot(String id, DisabledTimeslot updatedTimeslot) {
+        Optional<DisabledTimeslot> optionalSlot = disabledTimeslotRepository.findById(id);
     
         if (optionalSlot.isPresent()) {
             DisabledTimeslot slot = optionalSlot.get();
-            slot.setTimeSlotId(updatedTimeSlot.getTimeSlotId());
-            slot.setReason(updatedTimeSlot.getReason());
-            return disabledTimeSlotRepository.save(slot);
+            slot.setTimeslotId(updatedTimeslot.getTimeslotId());
+            slot.setReason(updatedTimeslot.getReason());
+            return disabledTimeslotRepository.save(slot);
         } else {
             throw new RuntimeException("Timeslot not found with id: " + id);
         }
     }
 
     public void deleteDisabledTimeslot(String id) {
-        disabledTimeSlotRepository.deleteById(id);
+        disabledTimeslotRepository.deleteById(id);
     }
 
-    public List<DisabledTimeslot> getTimeSlotsByReason(String reason) {
-        return disabledTimeSlotRepository.findByReason(reason);
+    public List<DisabledTimeslot> getTimeslotsByReason(String reason) {
+        return disabledTimeslotRepository.findByReason(reason);
     }
 }

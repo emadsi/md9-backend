@@ -16,15 +16,15 @@ public class DisabledTimeslotController {
     @Autowired
     private DisabledTimeslotService disabledTimeslotService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<DisabledTimeslot> getAllDisabledTimeslots() {
         return disabledTimeslotService.getAllDisabledTimeslots();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DisabledTimeslot> getDisabledTimeslotById(@PathVariable String id) {
-        Optional<DisabledTimeslot> timeSlot = disabledTimeslotService.getDisabledTimeslotById(id);
-        return timeSlot.map(ResponseEntity::ok)
+        Optional<DisabledTimeslot> timeslot = disabledTimeslotService.getDisabledTimeslotById(id);
+        return timeslot.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -40,9 +40,9 @@ public class DisabledTimeslotController {
 
     @PutMapping("/{id}")
     public ResponseEntity<DisabledTimeslot> updateDisabledTimeslot(
-            @PathVariable String id, @RequestBody DisabledTimeslot updatedTimeSlot) {
+            @PathVariable String id, @RequestBody DisabledTimeslot updatedTimeslot) {
         try {
-            return ResponseEntity.ok(disabledTimeslotService.updateDisabledTimeslot(id, updatedTimeSlot));
+            return ResponseEntity.ok(disabledTimeslotService.updateDisabledTimeslot(id, updatedTimeslot));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
@@ -55,7 +55,7 @@ public class DisabledTimeslotController {
     }
 
     @GetMapping("/reason/{reason}")
-    public List<DisabledTimeslot> getTimeSlotsByReason(@PathVariable String reason) {
-        return disabledTimeslotService.getTimeSlotsByReason(reason);
+    public List<DisabledTimeslot> getTimeslotsByReason(@PathVariable String reason) {
+        return disabledTimeslotService.getTimeslotsByReason(reason);
     }
 }

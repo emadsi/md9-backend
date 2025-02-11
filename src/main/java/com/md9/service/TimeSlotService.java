@@ -25,65 +25,65 @@ public class TimeslotService {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    // public TimeslotService(TimeslotRepository timeSlotRepository, DisabledTimeslotRepository disabledTimeSlotRepository, ReservationRepository reservationRepository) {
-    //     this.timeSlotRepository = timeSlotRepository;
+    // public TimeslotService(TimeslotRepository timeslotRepository, DisabledTimeslotRepository disabledTimeslotRepository, ReservationRepository reservationRepository) {
+    //     this.timeslotRepository = timeslotRepository;
     //     this.reservationRepository = reservationRepository;
-    //     this.disabledTimeSlotRepository = disabledTimeSlotRepository;
+    //     this.disabledTimeslotRepository = disabledTimeslotRepository;
     // }
 
     @Transactional
-    public void addTimeSlot(String from, String to, String fieldId) {
+    public void addTimeslot(String from, String to, String fieldId) {
         LocalTime startTime = LocalTime.parse(from);
         LocalTime endTime = LocalTime.parse(to);
        
 
         // Fetch existing time slots and add the new one in order
-        List<Timeslot> timeSlots = timeslotRepository.findAll();
-        Integer timeSlotsLength = timeSlots.size();
-        timeSlots.add(new Timeslot((timeSlotsLength).toString(), startTime, endTime, fieldId));
-        timeSlots.sort((ts1, ts2) -> ts1.getStartTime().compareTo(ts2.getStartTime()));
+        List<Timeslot> timeslots = timeslotRepository.findAll();
+        Integer timeslotsLength = timeslots.size();
+        timeslots.add(new Timeslot((timeslotsLength).toString(), startTime, endTime, fieldId));
+        timeslots.sort((ts1, ts2) -> ts1.getStartTime().compareTo(ts2.getStartTime()));
 
         // Save updated time slots and update reservations
-        for (int i = 0; i < timeSlots.size(); i++) {
-            timeSlots.get(i).setId(String.format("%d", i + 1));
-            timeslotRepository.save(timeSlots.get(i));
+        for (int i = 0; i < timeslots.size(); i++) {
+            timeslots.get(i).setId(String.format("%d", i + 1));
+            timeslotRepository.save(timeslots.get(i));
         }
 
         // Update reservations collection
-        for (int i = 0; i < timeSlots.size(); i++) {
-            reservationRepository.updateTimeSlotIds(timeSlots.get(i).getId(), String.format("%d", i + 1));
+        for (int i = 0; i < timeslots.size(); i++) {
+            reservationRepository.updateTimeslotIds(timeslots.get(i).getId(), String.format("%d", i + 1));
         }
 
-        // for (int i = 0; i < timeSlots.size(); i++) {
-        //     timeSlots.get(i).setId(String.valueOf(i + 1));
-        //     timeSlotRepository.save(timeSlots.get(i));
+        // for (int i = 0; i < timeslots.size(); i++) {
+        //     timeslots.get(i).setId(String.valueOf(i + 1));
+        //     timeslotRepository.save(timeslots.get(i));
         // }
     }
 
     @Transactional
-    public void blockTimeSlot(String timeslotId, LocalDate date) {
+    public void blockTimeslot(String timeslotId, LocalDate date) {
         DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeslotId, date, "blocked");
         disabledTimeslotRepository.save(disabledTimeslot);
     }
 
     @Transactional
-    public void blockAllTimeSlots(LocalDate date) {
-        List<Timeslot> timeSlots = timeslotRepository.findAll();
-        for (Timeslot timeSlot : timeSlots) {
-            DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlot.getId(), date, "blocked");
+    public void blockAllTimeslots(LocalDate date) {
+        List<Timeslot> timeslots = timeslotRepository.findAll();
+        for (Timeslot timeslot : timeslots) {
+            DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeslot.getId(), date, "blocked");
             disabledTimeslotRepository.save(disabledTimeslot);
         }
     }
 
     // Fetch all time slots
     @Transactional
-    public List<Timeslot> getAllTimeSlots() {
+    public List<Timeslot> getAllTimeslots() {
         return timeslotRepository.findAll();
     }
 
     // Delete a time slot by ID
     @Transactional
-    public void deleteTimeSlot(String id) {
+    public void deleteTimeslot(String id) {
         timeslotRepository.deleteById(id);
     }
 }

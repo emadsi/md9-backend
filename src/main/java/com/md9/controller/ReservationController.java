@@ -27,7 +27,6 @@ public class ReservationController {
         return reservationService.createReservation(reservation);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/all")
     public List<Reservation> getAllReservations() {
         return reservationService.getAllReservations();
@@ -39,8 +38,8 @@ public class ReservationController {
     }
 
     @GetMapping("/available-slots")
-    public ResponseEntity<List<String>> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        List<String> availableSlots = reservationService.getAvailableTimeSlots(date);
+    public ResponseEntity<List<String>> getAvailableTimeslots(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<String> availableSlots = reservationService.getAvailableTimeslots(date);
         return ResponseEntity.ok(availableSlots);
     }
 }

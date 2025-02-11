@@ -20,12 +20,16 @@ public class Reservation {
     private LocalDate date;
     @NotNull(message = "Pick Time Slot.")
     private String timeslotId;
+    @NotNull(message = "Pick Field ID.")
+    private String fieldId;
     @NotBlank(message = "Payment method is required.")
     private String paymentMethod;
     @NotNull(message = "Confirmation number is required.")
     private String confirmationNo;
     @NotBlank(message = "Status is required.")
     private String status;
+    @NotBlank(message = "Created At is required")
+    private LocalDate createdAt;
 
     // Getters 
     public String getReservationId() {
@@ -44,8 +48,12 @@ public class Reservation {
         return this.date;
     }
 
-    public String getTimeSlotId() {
+    public String getTimeslotId() {
         return this.timeslotId;
+    }
+
+    public String getFieldId() {
+        return this.fieldId;
     }
 
     public String getPaymentMethod() {
@@ -58,6 +66,10 @@ public class Reservation {
 
     public String getStatus() {
         return this.status;
+    }
+
+    public LocalDate getCreatedAt() {
+        return this.createdAt;
     }
 
     //Setters
@@ -77,8 +89,12 @@ public class Reservation {
         this.date = date;
     }
 
-    public void setTimeSlot(String timeslotId) {
+    public void setTimeslot(String timeslotId) {
         this.timeslotId = timeslotId;
+    }
+
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
     }
 
     public void setPaymentMethod(String paymentMethod) {
@@ -93,4 +109,7 @@ public class Reservation {
         this.status = status;
     }
 
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
 }

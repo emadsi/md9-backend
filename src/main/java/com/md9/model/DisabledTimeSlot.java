@@ -45,11 +45,11 @@ public class DisabledTimeslot {
         this.reason = reason;
     }
 
-    public String getTimeSlotId() {
+    public String getTimeslotId() {
         return timeslotId;
     }
 
-    public void setTimeSlotId(String timeslotId) {
+    public void setTimeslotId(String timeslotId) {
         this.timeslotId = timeslotId;
     }
 }

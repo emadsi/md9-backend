@@ -21,17 +21,17 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
 
     @Autowired
-    private TimeslotRepository timeSlotRepository;
+    private TimeslotRepository timeslotRepository;
 
     @Autowired
-    private DisabledTimeslotRepository disabledTimeSlotRepository;
+    private DisabledTimeslotRepository disabledTimeslotRepository;
 
     
 
-    // public ReservationService(ReservationRepository reservationRepository, DisabledTimeslotRepository disabledTimeSlotRepository, TimeslotRepository timeSlotRepository) {
+    // public ReservationService(ReservationRepository reservationRepository, DisabledTimeslotRepository disabledTimeslotRepository, TimeslotRepository timeslotRepository) {
     //     this.reservationRepository = reservationRepository;
-    //     this.timeSlotRepository = timeSlotRepository;
-    //     this.disabledTimeSlotRepository = disabledTimeSlotRepository;
+    //     this.timeslotRepository = timeslotRepository;
+    //     this.disabledTimeslotRepository = disabledTimeslotRepository;
     // }
 
     // public Reservation createReservation(Reservation reservation) {
@@ -39,8 +39,8 @@ public class ReservationService {
     // }
 
     public Reservation createReservation(Reservation reservation) {
-        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeSlotRepository.findAll().size()), reservation.getTimeSlotId(), reservation.getDate(), "reserved");
-        disabledTimeSlotRepository.save(disabledTimeslot);
+        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size()), reservation.getTimeslotId(), reservation.getDate(), "reserved");
+        disabledTimeslotRepository.save(disabledTimeslot);
 
         //confirmation Number to be replaced with CreditCard Confirmation Number
         reservation.setConfirmationNo(generateConfirmationNumber().toString());
@@ -65,9 +65,9 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public List<String> getAvailableTimeSlots(LocalDate date) {
+    public List<String> getAvailableTimeslots(LocalDate date) {
         // Fetch all timeslots
-        List<Timeslot> allTimeslots = timeSlotRepository.findAll();
+        List<Timeslot> allTimeslots = timeslotRepository.findAll();
 
         // Fetch reserved timeslot IDs for the given date
         List<String> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
