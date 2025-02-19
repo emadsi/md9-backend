@@ -5,7 +5,6 @@ import com.md9.repository.DisabledTimeslotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,7 @@ public class DisabledTimeslotService {
     @Autowired
     private DisabledTimeslotRepository disabledTimeslotRepository;
 
-    public List<DisabledTimeslot> getDisabledTimeslotsByDate(LocalDate date) {
+    public List<DisabledTimeslot> getDisabledTimeslotsByDate(String date) {
         return disabledTimeslotRepository.findByDate(date);
     }
 

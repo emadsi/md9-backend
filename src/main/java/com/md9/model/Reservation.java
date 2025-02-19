@@ -1,7 +1,5 @@
 package com.md9.model;
 
-import java.time.LocalDate;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,7 +15,7 @@ public class Reservation {
     @Pattern(regexp = "^\\d{10}$", message = "Mobile number must be 10 digits.")
     private String mobile;
     @NotNull(message = "Date is required.")
-    private LocalDate date;
+    private String date;
     @NotNull(message = "Pick Time Slot.")
     private String timeslotId;
     @NotNull(message = "Pick Field ID.")
@@ -29,7 +27,7 @@ public class Reservation {
     @NotBlank(message = "Status is required.")
     private String status;
     @NotBlank(message = "Created At is required")
-    private LocalDate createdAt;
+    private String createdAt;
 
     // Getters 
     public String getReservationId() {
@@ -44,7 +42,7 @@ public class Reservation {
         return this.mobile;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return this.date;
     }
 
@@ -68,7 +66,7 @@ public class Reservation {
         return this.status;
     }
 
-    public LocalDate getCreatedAt() {
+    public String getCreatedAt() {
         return this.createdAt;
     }
 
@@ -85,7 +83,7 @@ public class Reservation {
         this.mobile = mobileNumber;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -109,7 +107,7 @@ public class Reservation {
         this.status = status;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }

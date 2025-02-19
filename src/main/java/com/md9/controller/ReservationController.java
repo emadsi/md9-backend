@@ -4,11 +4,9 @@ package com.md9.controller;
 import com.md9.model.Reservation;
 import com.md9.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -38,7 +36,7 @@ public class ReservationController {
     }
 
     @GetMapping("/available-slots")
-    public ResponseEntity<List<String>> getAvailableTimeslots(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public ResponseEntity<List<String>> getAvailableTimeslots(@RequestParam("date") String date) {
         List<String> availableSlots = reservationService.getAvailableTimeslots(date);
         return ResponseEntity.ok(availableSlots);
     }

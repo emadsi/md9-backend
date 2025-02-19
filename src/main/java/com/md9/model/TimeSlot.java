@@ -1,8 +1,5 @@
 package com.md9.model;
 
-// import java.time.LocalDate;
-import java.time.LocalTime;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,12 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Timeslot {
     @Id
     private String id;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String startTime;
+    private String endTime;
     private String fieldId;
 
     //constructors
-    public Timeslot(String id, LocalTime startTime, LocalTime endTime, String fieldId) {
+    public Timeslot(String id, String startTime, String endTime, String fieldId) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -32,19 +29,19 @@ public class Timeslot {
         this.id = id;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

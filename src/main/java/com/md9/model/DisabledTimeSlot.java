@@ -1,7 +1,5 @@
 package com.md9.model;
 
-import java.time.LocalDate;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,11 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class DisabledTimeslot {
      @Id
     private String id;
-    private LocalDate date; // The date this time slot is disabled or reserved
+    private String date; // The date this time slot is disabled or reserved
     private String reason; // Either "blocked" or "reserved"
     private String timeslotId;
 
-    public DisabledTimeslot(String id, String timeslotId, LocalDate date, String reason) {
+    public DisabledTimeslot(String id, String timeslotId, String date, String reason) {
         this.id = id;
         this.timeslotId = timeslotId;
         this.date = date;
@@ -29,11 +27,11 @@ public class DisabledTimeslot {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

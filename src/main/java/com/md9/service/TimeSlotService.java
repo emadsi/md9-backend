@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -25,17 +23,9 @@ public class TimeslotService {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    // public TimeslotService(TimeslotRepository timeslotRepository, DisabledTimeslotRepository disabledTimeslotRepository, ReservationRepository reservationRepository) {
-    //     this.timeslotRepository = timeslotRepository;
-    //     this.reservationRepository = reservationRepository;
-    //     this.disabledTimeslotRepository = disabledTimeslotRepository;
-    // }
-
     @Transactional
-    public void addTimeslot(String from, String to, String fieldId) {
-        LocalTime startTime = LocalTime.parse(from);
-        LocalTime endTime = LocalTime.parse(to);
-       
+    public void addTimeslot(String startTime, String endTime, String fieldId) {
+
 
         // Fetch existing time slots and add the new one in order
         List<Timeslot> timeslots = timeslotRepository.findAll();
@@ -53,24 +43,19 @@ public class TimeslotService {
         for (int i = 0; i < timeslots.size(); i++) {
             reservationRepository.updateTimeslotIds(timeslots.get(i).getId(), String.format("%d", i + 1));
         }
-
-        // for (int i = 0; i < timeslots.size(); i++) {
-        //     timeslots.get(i).setId(String.valueOf(i + 1));
-        //     timeslotRepository.save(timeslots.get(i));
-        // }
     }
 
     @Transactional
-    public void blockTimeslot(String timeslotId, LocalDate date) {
+    public void blockTimeslot(String timeslotId, String date) {
         DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeslotId, date, "blocked");
         disabledTimeslotRepository.save(disabledTimeslot);
     }
 
     @Transactional
-    public void blockAllTimeslots(LocalDate date) {
+    public void blockAllTimeslots(String date) {
         List<Timeslot> timeslots = timeslotRepository.findAll();
-        for (Timeslot timeslot : timeslots) {
-            DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeslot.getId(), date, "blocked");
+        for (Timeslot timeSlot : timeslots) {
+            DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlot.getId(), date, "blocked");
             disabledTimeslotRepository.save(disabledTimeslot);
         }
     }

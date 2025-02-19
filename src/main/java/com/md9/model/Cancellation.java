@@ -1,8 +1,6 @@
 // /model/Cancellation.java
 package com.md9.model;
 
-import java.time.LocalDate;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +12,7 @@ public class Cancellation {
     private String reservationId;
     private String cancelledBy; // "User" or Admin Name
     private String reason;
-    private LocalDate createdAt;
+    private String createdAt;
 
     // Getters 
 
@@ -34,7 +32,7 @@ public class Cancellation {
         return this.reason;
     }
 
-    public LocalDate getCreatedAt() {
+    public String getCreatedAt() {
         return this.createdAt;
     }
     
@@ -56,7 +54,7 @@ public class Cancellation {
         this.reason = reason;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }

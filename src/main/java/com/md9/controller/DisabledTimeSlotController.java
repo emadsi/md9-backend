@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +22,13 @@ public class DisabledTimeslotController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DisabledTimeslot> getDisabledTimeslotById(@PathVariable String id) {
-        Optional<DisabledTimeslot> timeslot = disabledTimeslotService.getDisabledTimeslotById(id);
-        return timeslot.map(ResponseEntity::ok)
+        Optional<DisabledTimeslot> timeSlot = disabledTimeslotService.getDisabledTimeslotById(id);
+        return timeSlot.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{date}")
-    public List<DisabledTimeslot> getDisabledTimeslots(@PathVariable LocalDate date) {
+    public List<DisabledTimeslot> getDisabledTimeslots(@PathVariable String date) {
         return disabledTimeslotService.getDisabledTimeslotsByDate(date);
     }
 
