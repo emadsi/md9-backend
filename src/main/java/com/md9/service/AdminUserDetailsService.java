@@ -1,13 +1,12 @@
 package com.md9.service;
 
+import com.md9.model.Admin;
+import com.md9.model.AdminUserDetails;
+import com.md9.repository.AdminRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.md9.model.Admin;
-import com.md9.model.AdminUserDetails;
-import com.md9.repository.AdminRepository;
 
 import java.util.Optional;
 
@@ -22,9 +21,12 @@ public class AdminUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Admin> admin = adminRepository.findByUsername(username);
-        
-        return admin.map(AdminUserDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("Admin not found with username: " + username));
+        Optional<Admin> adminOptional = adminRepository.findByUsername(username);
+
+        if (adminOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Admin not found with username: " + username);
+        }
+
+        return new AdminUserDetails(adminOptional.get());
     }
 }
