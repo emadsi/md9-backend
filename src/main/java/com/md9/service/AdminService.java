@@ -18,12 +18,10 @@ public class AdminService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✅ Find Admin by Username
     public Optional<Admin> findByUsername(String username) {
         return adminRepository.findByUsername(username);
     }
 
-    // ✅ Register a New Admin
     public Admin registerAdmin(Admin admin) {
         admin.setPassword(passwordEncoder.encode(admin.getPassword())); // Hash password
         return adminRepository.save(admin);
