@@ -1,17 +1,16 @@
 package com.md9.service;
 
+
 import com.md9.model.Admin;
-import com.md9.model.AdminUserDetails;
 import com.md9.repository.AdminRepository;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+
 
 @Service
-public class AuthService implements UserDetailsService {
+public class AuthService {
 
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
@@ -21,19 +20,14 @@ public class AuthService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // ✅ Register a New Admin
     public ResponseEntity<?> register(Admin admin) {
         if (adminRepository.findByUsername(admin.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("Username already exists");
         }
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        adminRepository.save(admin);
-        return ResponseEntity.ok("Admin registered successfully");
+        Admin savedAdmin = adminRepository.save(admin);
+        return ResponseEntity.ok(savedAdmin);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        Optional<Admin> admin = adminRepository.findByUsername(username);
-        return admin.map(AdminUserDetails::new)
-                .orElseThrow(() -> new RuntimeException("Admin not found"));
-    }
 }

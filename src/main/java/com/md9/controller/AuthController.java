@@ -1,6 +1,6 @@
 package com.md9.controller;
-
 import com.md9.model.Admin;
+import com.md9.service.AdminUserDetailsService;
 import com.md9.service.AuthService;
 import com.md9.service.JwtUtil;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,13 @@ public class AuthController {
     private final AuthService authService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final AdminUserDetailsService adminUserDetailsService;
 
-    public AuthController(AuthService authService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public AuthController(AuthService authService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, AdminUserDetailsService adminUserDetailsService) {
         this.authService = authService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.adminUserDetailsService = adminUserDetailsService;
     }
 
     @PostMapping("/register")
@@ -37,7 +39,7 @@ public class AuthController {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-        UserDetails userDetails = authService.loadUserByUsername(username);
+        UserDetails userDetails = adminUserDetailsService.loadUserByUsername(username);
         String token = jwtUtil.generateToken(userDetails.getUsername());
 
         return ResponseEntity.ok(Map.of("token", token));

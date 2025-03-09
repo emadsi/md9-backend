@@ -1,4 +1,4 @@
-// /model/Admin.java
+// // /model/Admin.java
 package com.md9.model;
 
 import org.springframework.data.annotation.Id;
@@ -56,3 +56,21 @@ public class Admin {
         this.email = email;
     }
 }
+
+
+// import org.springframework.data.annotation.Id;
+// import org.springframework.data.mongodb.core.mapping.Document;
+// import lombok.*;
+
+// @Document(collection = "admins")
+// @Data
+// @NoArgsConstructor
+// @AllArgsConstructor
+// public class Admin {
+//     @Id
+//     private String id;
+//     private String name;
+//     private String username;
+//     private String password;
+//     private String email;
+// }

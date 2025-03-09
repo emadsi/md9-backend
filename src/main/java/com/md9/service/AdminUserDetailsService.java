@@ -20,7 +20,7 @@ public class AdminUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         Optional<Admin> adminOptional = adminRepository.findByUsername(username);
 
         if (adminOptional.isEmpty()) {
