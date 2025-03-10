@@ -22,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -39,21 +38,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // ✅ Ensure CSRF is disabled
-            .cors(withDefaults()) // ✅ Enable CORS with defaults
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ Apply CORS correctly
+            .csrf(csrf -> csrf.disable()) // ✅ Disable CSRF for APIs
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ Stateless session
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/login", "/api/auth/register").permitAll() // ✅ Allow login & register
-                .requestMatchers(
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/swagger-resources/**",
-                    "/webjars/**"
-                ).permitAll() // ✅ Allow Swagger UI
-                .anyRequest().authenticated() // ✅ Protect other APIs
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll() // ✅ Allow Swagger UI
+                .anyRequest().authenticated() // ✅ Secure all other endpoints
             )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .authenticationProvider(authenticationProvider()) // ✅ Set Authentication Provider
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // ✅ Add JWT filter
 
         return http.build();
     }
@@ -61,7 +55,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // ✅ Frontend URL
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // ✅ Allow Angular frontend
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
@@ -79,7 +73,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(adminUserDetailsService);
+        authProvider.setUserDetailsService(adminUserDetailsService); // ✅ Ensure correct UserDetailsService
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

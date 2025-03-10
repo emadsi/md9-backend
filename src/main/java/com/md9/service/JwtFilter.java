@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +17,9 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final AdminUserDetailsService adminUserDetailsService;
+    private final AdminUserDetailsService adminUserDetailsService; // ✅ Use the correct service
 
-    public JwtFilter(JwtUtil jwtUtil, @Qualifier("adminUserDetailsService") AdminUserDetailsService adminUserDetailsService) {
+    public JwtFilter(JwtUtil jwtUtil, AdminUserDetailsService adminUserDetailsService) {
         this.jwtUtil = jwtUtil;
         this.adminUserDetailsService = adminUserDetailsService;
     }

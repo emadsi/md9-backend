@@ -6,30 +6,25 @@ import com.md9.service.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
     private final AdminUserDetailsService adminUserDetailsService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(AuthService authService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, AdminUserDetailsService adminUserDetailsService) {
-        this.authService = authService;
+    public AuthController(AuthenticationManager authenticationManager, AdminUserDetailsService adminUserDetailsService, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
         this.adminUserDetailsService = adminUserDetailsService;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> registerAdmin(@RequestBody Admin admin) {
-        return authService.register(admin);
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
@@ -37,11 +32,13 @@ public class AuthController {
         String username = credentials.get("username");
         String password = credentials.get("password");
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(username, password)
+        );
 
         UserDetails userDetails = adminUserDetailsService.loadUserByUsername(username);
         String token = jwtUtil.generateToken(userDetails.getUsername());
 
-        return ResponseEntity.ok(Map.of("token", token));
+        return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 }
