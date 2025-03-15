@@ -13,6 +13,7 @@ public class Admin {
     private String username;
     private String password;
     private String email;
+    private boolean superAdmin;
 
     // Getters
     public String getId() {
@@ -35,6 +36,10 @@ public class Admin {
         return this.email;
     }
 
+    public boolean isSuperAdmin() {
+        return this.superAdmin;
+    }
+
     // Setters
     public void setId(String adminId) {
         this.adminId = adminId;
@@ -55,22 +60,8 @@ public class Admin {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void setSuperAdmin(boolean superAdmin) {
+        this.superAdmin = superAdmin;
+    }
 }
-
-
-// import org.springframework.data.annotation.Id;
-// import org.springframework.data.mongodb.core.mapping.Document;
-// import lombok.*;
-
-// @Document(collection = "admins")
-// @Data
-// @NoArgsConstructor
-// @AllArgsConstructor
-// public class Admin {
-//     @Id
-//     private String id;
-//     private String name;
-//     private String username;
-//     private String password;
-//     private String email;
-// }

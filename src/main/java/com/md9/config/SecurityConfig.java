@@ -42,7 +42,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // ✅ Disable CSRF for APIs
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ Stateless session
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll() // ✅ Allow login & register
+                .requestMatchers("/api/auth/login").permitAll() // ✅ Allow login
+                .requestMatchers("/api/admins/register").authenticated() //Only authenticated users can register admins
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll() // ✅ Allow Swagger UI
                 .anyRequest().authenticated() // ✅ Secure all other endpoints
             )

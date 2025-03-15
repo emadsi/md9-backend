@@ -4,6 +4,7 @@ import com.md9.model.Admin;
 import com.md9.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,12 +21,9 @@ public class AdminController {
 
     // ✅ Register a new admin
     @PostMapping("/register")
-    public ResponseEntity<?> registerAdmin(@RequestBody Admin admin) {
-        if (adminService.findByUsername(admin.getUsername()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
-        }
-        Admin savedAdmin = adminService.registerAdmin(admin);
-        return ResponseEntity.ok(savedAdmin);
+    public ResponseEntity<?> registerAdmin(@RequestBody Admin admin, Authentication authentication) {
+        String requesterUsername = authentication.getName();
+        return adminService.registerAdmin(admin, requesterUsername);
     }
 
     // ✅ Fetch an admin by username
