@@ -13,6 +13,7 @@ public class Admin {
     private String username;
     private String password;
     private String email;
+    private String mobile;
     private boolean superAdmin;
 
     // Getters
@@ -34,6 +35,10 @@ public class Admin {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public String getMobile() {
+        return this.mobile;
     }
 
     public boolean isSuperAdmin() {
@@ -59,6 +64,10 @@ public class Admin {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public void setSuperAdmin(boolean superAdmin) {

@@ -38,20 +38,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ Apply CORS correctly
-            .csrf(csrf -> csrf.disable()) // ✅ Disable CSRF for APIs
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ Stateless session
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS
+            .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login").permitAll() // ✅ Allow login
-                .requestMatchers("/api/admins/register").authenticated() //Only authenticated users can register admins
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll() // ✅ Allow Swagger UI
-                .anyRequest().authenticated() // ✅ Secure all other endpoints
+                .requestMatchers("/api/auth/login", "/api/auth/forgot-password", "/api/auth/reset-password").permitAll() // Public endpoints
+                .requestMatchers("/api/admins/register").hasAuthority("SUPER_ADMIN") // ✅ Only allow super admins to register
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll() // Allow Swagger
+                .anyRequest().authenticated() // Secure all other endpoints
             )
-            .authenticationProvider(authenticationProvider()) // ✅ Set Authentication Provider
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // ✅ Add JWT filter
+            .authenticationProvider(authenticationProvider()) // Set Authentication Provider
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
 
         return http.build();
     }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
