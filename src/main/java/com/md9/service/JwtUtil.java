@@ -22,11 +22,12 @@ public class JwtUtil {
     }
 
     // ✅ Generate JWT Token
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role) //Include role in token
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Valid for 10 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Valid for 30 minutes
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -34,6 +35,11 @@ public class JwtUtil {
     // ✅ Extract Username from JWT
     public String extractUsername(String token) {
         return extractClaims(token).getSubject();
+    }
+
+    // Extract Role from JWT
+    public String extractRole(String token) {
+        return extractClaims(token).get("role", String.class);
     }
 
     // ✅ Extract Claims from JWT
