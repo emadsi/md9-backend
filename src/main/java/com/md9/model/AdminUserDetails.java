@@ -17,9 +17,13 @@ public class AdminUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return admin.isSuperAdmin()
-            ? List.of(new SimpleGrantedAuthority("SUPER_ADMIN")) // ✅ match SecurityConfig
-            : List.of(new SimpleGrantedAuthority("ADMIN"));
+        // return admin.getIsSuperAdmin()
+        //     ? List.of(new SimpleGrantedAuthority("SUPER_ADMIN")) // ✅ match SecurityConfig
+        //     : List.of(new SimpleGrantedAuthority("ADMIN"));
+
+        String role = admin.getIsSuperAdmin() ? "SUPER_ADMIN" : "ADMIN";
+        System.out.println("[AdminUserDetails] 👤 Role assigned for " + admin.getUsername() + ": " + role);
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override

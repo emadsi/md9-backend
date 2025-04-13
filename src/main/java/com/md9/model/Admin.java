@@ -8,16 +8,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "admins")
 public class Admin {
     @Id
+    private String id;
+
     private String adminId;
     private String name;
     private String username;
     private String password;
     private String email;
     private String mobile;
-    private boolean superAdmin;
+    private boolean isSuperAdmin;
 
     // Getters
     public String getId() {
+        return this.id;
+    }
+    public String getAdminId() {
         return this.adminId;
     }
 
@@ -41,12 +46,15 @@ public class Admin {
         return this.mobile;
     }
 
-    public boolean isSuperAdmin() {
-        return this.superAdmin;
+    public boolean getIsSuperAdmin() {
+        return this.isSuperAdmin;
     }
 
     // Setters
-    public void setId(String adminId) {
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setAdminId(String adminId) {
         this.adminId = adminId;
     }
 
@@ -70,7 +78,7 @@ public class Admin {
         this.mobile = mobile;
     }
 
-    public void setSuperAdmin(boolean superAdmin) {
-        this.superAdmin = superAdmin;
+    public void setIsSuperAdmin(boolean isSuperAdmin) {
+        this.isSuperAdmin = isSuperAdmin;
     }
 }

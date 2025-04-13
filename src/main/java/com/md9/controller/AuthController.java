@@ -39,7 +39,7 @@ public class AuthController {
         
         // Fetch admin from DB
         Optional<Admin> adminOptional = adminRepository.findByUsername(username);
-        String role = adminOptional.get().isSuperAdmin() ? "SUPER_ADMIN" : "ADMIN";
+        String role = adminOptional.get().getIsSuperAdmin() ? "SUPER_ADMIN" : "ADMIN";
 
         if (adminOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
@@ -52,7 +52,7 @@ public class AuthController {
         // ✅ Return token and isSuperAdmin status
         return ResponseEntity.ok(Map.of(
             "token", token,
-            "isSuperAdmin", admin.isSuperAdmin(),
+            "isSuperAdmin", admin.getIsSuperAdmin(),
             "admin", admin
         ));
     }

@@ -8,5 +8,5 @@ public interface AdminRepository extends MongoRepository<Admin, String> {
     Optional<Admin> findByUsername(String username);
     
     // ✅ Find the admin with the highest ID
-    Optional<Admin> findTopByOrderByIdDesc();
+    Optional<Admin> findTopByOrderByAdminIdDesc();
 }

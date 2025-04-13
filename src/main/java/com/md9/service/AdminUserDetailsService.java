@@ -21,12 +21,18 @@ public class AdminUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
+        System.out.println("[AdminUserDetailsService] 🔍 Attempting to load user: " + username); // Logging Username loading attempt
+        
         Optional<Admin> adminOptional = adminRepository.findByUsername(username);
 
         if (adminOptional.isEmpty()) {
+            System.out.println("[AdminUserDetailsService] ❌ Admin not found: " + username); //Logging for admin not found
             throw new UsernameNotFoundException("Admin not found with username: " + username);
         }
 
-        return new AdminUserDetails(adminOptional.get());
+        Admin admin = adminOptional.get();
+        System.out.println("[AdminUserDetailsService] ✅ Admin found: " + username + " | isSuperAdmin: " + admin.getIsSuperAdmin());
+        
+        return new AdminUserDetails(admin);
     }
 }

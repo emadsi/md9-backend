@@ -23,32 +23,52 @@ public class JwtUtil {
 
     // ✅ Generate JWT Token
     public String generateToken(String username, String role) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(username)
                 .claim("role", role) //Include role in token
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Valid for 30 minutes
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
+
+        System.out.println("[JwtUtil] ✅ Generated token for " + username + " with role " + role);
+        return token;
     }
 
     // ✅ Extract Username from JWT
     public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
+        String username = extractClaims(token).getSubject();
+        System.out.println("[JwtUtil] ✅ Extracted username: " + username);
+
+        return username;
     }
 
     // Extract Role from JWT
     public String extractRole(String token) {
-        return extractClaims(token).get("role", String.class);
+        String role = extractClaims(token).get("role", String.class);
+        System.out.println("[JwtUtil] ✅ Extracted role: " + role);
+        
+        return role;
     }
 
     // ✅ Extract Claims from JWT
     private Claims extractClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        // return Jwts.parserBuilder()
+        //         .setSigningKey(getSigningKey())
+        //         .build()
+        //         .parseClaimsJws(token)
+        //         .getBody();
+        
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            System.out.println("[JwtUtil] ❌ Error extracting claims: " + e.getMessage());
+            throw e;
+        }
     }
 
     // ✅ Extract Specific Claim
@@ -58,12 +78,21 @@ public class JwtUtil {
 
     // ✅ Check if Token is Valid
     public boolean isTokenValid(String token, UserDetails userDetails) {
+        // final String username = extractUsername(token);
+        // return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+
         final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        boolean valid = username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        System.out.println("[JwtUtil] ✅ Token valid for " + username + ": " + valid);
+        return valid;
     }
 
     // ✅ Check if Token is Expired
     private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+        // return extractClaim(token, Claims::getExpiration).before(new Date());
+
+        boolean expired = extractClaim(token, Claims::getExpiration).before(new Date());
+        System.out.println("[JwtUtil] ✅ Token expired: " + expired);
+        return expired;
     }
 }
