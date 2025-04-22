@@ -31,8 +31,9 @@ public class TimeslotController {
     @PostMapping("/block")
     public ResponseEntity<String> blockTimeslots(
             @RequestParam(required = true) String timeslotId,
-            @RequestParam String date) {
-        timeslotService.blockTimeslot(timeslotId, date);
+            @RequestParam String date,
+            @RequestParam String fieldId) {
+        timeslotService.blockTimeslot(timeslotId, date, fieldId);
         return ResponseEntity.ok("Time slots blocked successfully.");
     }
 
@@ -51,7 +52,7 @@ public class TimeslotController {
     }
 
     @PostMapping("/block-all")
-    public void blockAllTimeslots(@RequestParam String date) {
-        timeslotService.blockAllTimeslots(date);
+    public void blockAllTimeslots(@RequestParam String date, @RequestParam String fieldId) {
+        timeslotService.blockAllTimeslots(date, fieldId);
     }
 }

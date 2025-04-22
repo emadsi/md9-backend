@@ -32,6 +32,22 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+    String path = request.getRequestURI();
+
+        // ✅ Skip JWT validation for public endpoints
+    if (path.startsWith("/api/auth/")
+        || path.equals("/api/timeslots/all")
+        || path.equals("/api/disabledTimeslots/all")
+        || path.startsWith("/swagger-ui/")
+        || path.startsWith("/v3/api-docs/")
+        || path.startsWith("/swagger-resources/")
+        || path.startsWith("/webjars/")) {
+
+        System.out.println("[JwtFilter] 🔓 Public endpoint accessed: " + path);
+        filterChain.doFilter(request, response);
+        return;
+    }
+
         final String authHeader = request.getHeader("Authorization");
         final String token;
 

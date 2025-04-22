@@ -26,7 +26,7 @@ public class ReservationService {
     private DisabledTimeslotRepository disabledTimeslotRepository;
 
     public Reservation createReservation(Reservation reservation) {
-        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size()), reservation.getTimeslotId(), reservation.getDate(), "reserved");
+        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size()), reservation.getTimeslotId(), reservation.getDate(), "reserved", reservation.getFieldId());
         disabledTimeslotRepository.save(disabledTimeslot);
 
         //confirmation Number to be replaced with CreditCard Confirmation Number

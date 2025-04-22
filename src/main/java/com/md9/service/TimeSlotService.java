@@ -46,16 +46,16 @@ public class TimeslotService {
     }
 
     @Transactional
-    public void blockTimeslot(String timeslotId, String date) {
-        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeslotId, date, "blocked");
+    public void blockTimeslot(String timeslotId, String date, String fieldId) {
+        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeslotId, date, "blocked", fieldId);
         disabledTimeslotRepository.save(disabledTimeslot);
     }
 
     @Transactional
-    public void blockAllTimeslots(String date) {
+    public void blockAllTimeslots(String date, String fieldId) {
         List<Timeslot> timeslots = timeslotRepository.findAll();
         for (Timeslot timeSlot : timeslots) {
-            DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlot.getId(), date, "blocked");
+            DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlot.getId(), date, "blocked", fieldId);
             disabledTimeslotRepository.save(disabledTimeslot);
         }
     }

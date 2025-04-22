@@ -20,14 +20,14 @@ public class DisabledTimeslotController {
         return disabledTimeslotService.getAllDisabledTimeslots();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<DisabledTimeslot> getDisabledTimeslotById(@PathVariable String id) {
         Optional<DisabledTimeslot> timeSlot = disabledTimeslotService.getDisabledTimeslotById(id);
         return timeSlot.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{date}")
+    @GetMapping("date/{date}")
     public List<DisabledTimeslot> getDisabledTimeslots(@PathVariable String date) {
         return disabledTimeslotService.getDisabledTimeslotsByDate(date);
     }

@@ -8,13 +8,15 @@ public class DisabledTimeslot {
      @Id
     private String id;
     private String date; // The date this time slot is disabled or reserved
+    private String fieldId;
     private String reason; // Either "blocked" or "reserved"
     private String timeslotId;
 
-    public DisabledTimeslot(String id, String timeslotId, String date, String reason) {
+    public DisabledTimeslot(String id, String timeslotId, String date, String reason, String fieldId) {
         this.id = id;
         this.timeslotId = timeslotId;
         this.date = date;
+        this.fieldId = fieldId;
         this.reason = reason;
     }
 
@@ -33,6 +35,14 @@ public class DisabledTimeslot {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getFieldId() {
+        return this.fieldId;
+    }
+
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
     }
 
     public String getReason() {
