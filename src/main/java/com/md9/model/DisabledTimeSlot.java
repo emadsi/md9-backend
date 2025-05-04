@@ -3,9 +3,9 @@ package com.md9.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "disabledTimeslot")
+@Document(collection = "disabledTimeslot")
 public class DisabledTimeslot {
-     @Id
+    @Id
     private String id;
     private String date; // The date this time slot is disabled or reserved
     private String fieldId;
