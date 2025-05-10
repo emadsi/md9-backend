@@ -10,7 +10,9 @@ import com.md9.repository.TimeslotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,18 +28,37 @@ public class ReservationService {
     private DisabledTimeslotRepository disabledTimeslotRepository;
 
     public Reservation createReservation(Reservation reservation) {
-        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(String.format("%d", disabledTimeslotRepository.findAll().size()), reservation.getTimeslotId(), reservation.getDate(), "reserved", reservation.getFieldId());
+        if (reservation.getConfirmationNo() == null || reservation.getConfirmationNo().isEmpty()) {
+            throw new IllegalArgumentException("Confirmation number must be provided after successful payment.");
+        }
+
+        // Prevent duplicate reservation for the same timeslot on the same field/date
+        boolean alreadyReserved = disabledTimeslotRepository.findByTimeslotIdAndDate(
+                reservation.getTimeslotId(), reservation.getDate()).stream()
+                .anyMatch(d -> d.getFieldId().equals(reservation.getFieldId()));
+
+        if (alreadyReserved) {
+            throw new IllegalStateException("This timeslot is already reserved or blocked.");
+        }
+
+        // Save DisabledTimeslot as reserved
+        DisabledTimeslot disabledTimeslot = new DisabledTimeslot(
+                null,
+                reservation.getTimeslotId(),
+                reservation.getDate(),
+                "reserved",
+                reservation.getFieldId());
         disabledTimeslotRepository.save(disabledTimeslot);
 
-        //confirmation Number to be replaced with CreditCard Confirmation Number
-        reservation.setConfirmationNo(generateConfirmationNumber().toString());
+        // Set default values
+        if (reservation.getStatus() == null || reservation.getStatus().isEmpty()) {
+            reservation.setStatus("Pending");
+        }
+        if (reservation.getCreatedAt() == null || reservation.getCreatedAt().isEmpty()) {
+            reservation.setCreatedAt(LocalDateTime.now().toString());
+        }
 
-        reservation.setStatus("Pending");
         return reservationRepository.save(reservation);
-    }
-    
-    private Long generateConfirmationNumber() {
-        return (long) (Math.random() * 9000 + 1000);
     }
 
     public List<Reservation> getAllReservations() {
@@ -49,16 +70,15 @@ public class ReservationService {
     }
 
     public List<String> getAvailableTimeslots(String date) {
-        // Fetch all timeslots
         List<Timeslot> allTimeslots = timeslotRepository.findAll();
-
-        // Fetch reserved timeSlot IDs for the given date
         List<String> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
-
-        // Filter available timeslots
         return allTimeslots.stream()
                 .filter(timeSlot -> !reservedTimeslotIds.contains(timeSlot.getId()))
                 .map(Timeslot::getId)
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Reservation> getByConfirmationNo(String confirmationNo) {
+        return reservationRepository.findByConfirmationNo(confirmationNo);
     }
 }

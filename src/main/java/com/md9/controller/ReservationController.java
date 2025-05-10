@@ -2,42 +2,67 @@
 package com.md9.controller;
 
 import com.md9.model.Reservation;
+// import com.md9.repository.ReservationRepository;
 import com.md9.service.ReservationService;
+
+import jakarta.validation.Valid;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
-    @Autowired
     private final ReservationService reservationService;
 
+    @Autowired
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
-    @PostMapping("/new")
-    public Reservation createReservation(@RequestParam Reservation reservation) {
-        return reservationService.createReservation(reservation);
+    /**
+     * Create a reservation after payment/Obligo confirmation
+     */
+    @PostMapping("/create")
+    public ResponseEntity<?> createReservation(@RequestBody @Valid Reservation reservation) {
+        try {
+            Reservation saved = reservationService.createReservation(reservation);
+            return ResponseEntity.ok(saved);
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body("Reservation creation failed.");
+        }
     }
 
+    /**
+     * Get all reservations
+     */
     @GetMapping("/all")
-    public List<Reservation> getAllReservations() {
-        return reservationService.getAllReservations();
+    public ResponseEntity<List<Reservation>> getAllReservations() {
+        return ResponseEntity.ok(reservationService.getAllReservations());
     }
 
+    /**
+     * Cancel a reservation by ID (for internal use)
+     */
     @DeleteMapping("/cancel/{id}")
-    public void cancelReservation(@PathVariable String id) {
+    public ResponseEntity<?> cancelReservation(@PathVariable String id) {
         reservationService.cancelReservation(id);
+        return ResponseEntity.ok("Reservation cancelled successfully.");
     }
 
-    @GetMapping("/available-slots")
-    public ResponseEntity<List<String>> getAvailableTimeslots(@RequestParam("date") String date) {
-        List<String> availableSlots = reservationService.getAvailableTimeslots(date);
-        return ResponseEntity.ok(availableSlots);
+    /**
+     * Get reservation by confirmation number (used for search/confirmation screens)
+     */
+    @GetMapping("/search")
+    public ResponseEntity<?> getByConfirmationNumber(@RequestParam String confirmationNumber) {
+        return reservationService.getByConfirmationNo(confirmationNumber)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

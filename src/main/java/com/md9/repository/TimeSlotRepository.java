@@ -18,7 +18,11 @@ public interface TimeslotRepository extends MongoRepository<Timeslot, String> {
     @Query("{ }")
     void blockAllOnDate(String date);
 
+    @Query("{ 'timeslotId': ?0 }")
+    void updateTimeslotIds(String oldTimeslotId, String newTimeslotId);
+
     // List<Timeslot> findByAvailable(boolean available);
 
-    // List<Timeslot> findByStartTimeBetween(LocalDateTime start, LocalDateTime end);
+    // List<Timeslot> findByStartTimeBetween(LocalDateTime start, LocalDateTime
+    // end);
 }
