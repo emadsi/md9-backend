@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.*;
 
-
 @Document(collection = "reservations")
 public class Reservation {
     @Id
@@ -29,16 +28,16 @@ public class Reservation {
     @NotBlank(message = "Created At is required")
     private String createdAt;
 
-    // Getters 
+    // Getters
     public String getReservationId() {
         return this.reservationId;
     }
 
-    public String getReserveeName() {
+    public String getReserverName() {
         return this.reserverName;
     }
 
-    public String getMobileNumber() {
+    public String getMobile() {
         return this.mobile;
     }
 
@@ -70,24 +69,24 @@ public class Reservation {
         return this.createdAt;
     }
 
-    //Setters
+    // Setters
     public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
     }
 
-    public void setReserveeName(String reserverName) {
+    public void setReserverName(String reserverName) {
         this.reserverName = reserverName;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobile = mobileNumber;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public void setTimeslot(String timeslotId) {
+    public void setTimeslotId(String timeslotId) {
         this.timeslotId = timeslotId;
     }
 

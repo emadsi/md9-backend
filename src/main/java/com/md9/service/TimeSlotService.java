@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TimeslotService {
@@ -34,13 +35,13 @@ public class TimeslotService {
 
         // Save updated time slots and update reservations
         for (int i = 0; i < timeslots.size(); i++) {
-            timeslots.get(i).setId(String.format("%d", i + 1));
+            timeslots.get(i).setTimeslotId(String.format("%d", i + 1));
             timeslotRepository.save(timeslots.get(i));
         }
 
         // Update reservations collection
         for (int i = 0; i < timeslots.size(); i++) {
-            timeslotRepository.updateTimeslotIds(timeslots.get(i).getId(), String.format("%d", i + 1));
+            timeslotRepository.updateTimeslotIds(timeslots.get(i).getTimeslotId(), String.format("%d", i + 1));
         }
     }
 
@@ -57,7 +58,8 @@ public class TimeslotService {
         List<Timeslot> timeslots = timeslotRepository.findAll();
         for (Timeslot timeSlot : timeslots) {
             DisabledTimeslot disabledTimeslot = new DisabledTimeslot(
-                    String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlot.getId(), date,
+                    String.format("%d", disabledTimeslotRepository.findAll().size() + 1), timeSlot.getTimeslotId(),
+                    date,
                     "blocked", fieldId);
             disabledTimeslotRepository.save(disabledTimeslot);
         }
@@ -73,5 +75,10 @@ public class TimeslotService {
     @Transactional
     public void deleteTimeslot(String id) {
         timeslotRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Optional<Timeslot> getTimeslotById(String id) {
+        return timeslotRepository.findById(id);
     }
 }

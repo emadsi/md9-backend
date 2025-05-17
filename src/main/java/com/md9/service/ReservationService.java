@@ -73,8 +73,8 @@ public class ReservationService {
         List<Timeslot> allTimeslots = timeslotRepository.findAll();
         List<String> reservedTimeslotIds = reservationRepository.findReservedTimeslotIdsByDate(date);
         return allTimeslots.stream()
-                .filter(timeSlot -> !reservedTimeslotIds.contains(timeSlot.getId()))
-                .map(Timeslot::getId)
+                .filter(timeSlot -> !reservedTimeslotIds.contains(timeSlot.getTimeslotId()))
+                .map(Timeslot::getTimeslotId)
                 .collect(Collectors.toList());
     }
 

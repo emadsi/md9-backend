@@ -35,29 +35,72 @@ public class SecurityConfig {
         this.adminUserDetailsService = adminUserDetailsService;
     }
 
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
+    // Exception {
+    // http
+    // .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply
+    // CORS
+    // .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
+    // .sessionManagement(session ->
+    // session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless
+    // // session
+    // .authorizeHttpRequests(auth -> auth
+    // .requestMatchers(
+    // "/api/auth/login",
+    // "/api/auth/forgot-password",
+    // "/api/auth/reset-password",
+    // "/api/timeslots/all",
+    // "/api/disabledTimeslots/all",
+    // "/api/reservations/create")
+    // .permitAll() // Public endpoints
+    // .requestMatchers("/api/admins/register").hasAuthority("SUPER_ADMIN") // ✅
+    // Only allow super
+    // // admins to register
+    // .requestMatchers("/swagger-ui/**", "/v3/api-docs/**",
+    // "/swagger-resources/**", "/webjars/**")
+    // .permitAll() // Allow Swagger
+    // .anyRequest().authenticated() // Secure all other endpoints
+    // )
+    // .authenticationProvider(authenticationProvider()) // Set Authentication
+    // Provider
+    // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); //
+    // Add JWT filter
+
+    // return http.build();
+    // }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS
-            .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/api/auth/login", 
-                    "/api/auth/forgot-password", 
-                    "/api/auth/reset-password", 
-                    "/api/timeslots/all", 
-                    "/api/disabledTimeslots/all").permitAll() // Public endpoints
-                .requestMatchers("/api/admins/register").hasAuthority("SUPER_ADMIN") // ✅ Only allow super admins to register
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll() // Allow Swagger
-                .anyRequest().authenticated() // Secure all other endpoints
-            )
-            .authenticationProvider(authenticationProvider()) // Set Authentication Provider
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // 🔐 Secure only specific authenticated routes
+                        .requestMatchers(
+                                "/api/admins/update",
+                                "/api/admins/change-password",
+                                "/api/admins/{username}",
+                                "/api/cancellations/report",
+                                "/api/reservations/search",
+                                "/api/reservations/all",
+                                "/api/timeslots/add",
+                                "/api/timeslots/block",
+                                "/api/timeslots/delete",
+                                "/api/timeslots/block-all")
+                        .authenticated()
+
+                        // 🔐 Route restricted to SUPER_ADMIN
+                        .requestMatchers("/api/admins/register").hasAuthority("SUPER_ADMIN")
+
+                        // 🔓 Everything else is public
+                        .anyRequest().permitAll())
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

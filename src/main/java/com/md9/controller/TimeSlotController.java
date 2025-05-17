@@ -4,11 +4,11 @@ import com.md9.model.Timeslot;
 import com.md9.service.TimeslotService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/api/timeslots")
@@ -17,7 +17,7 @@ public class TimeslotController {
     @Autowired
     private TimeslotService timeslotService;
 
-    //Create new Timeslot
+    // Create new Timeslot
     @PostMapping("/add")
     public ResponseEntity<String> addTimeslot(
             @RequestParam String startTime,
@@ -44,8 +44,17 @@ public class TimeslotController {
         return ResponseEntity.ok(timeslots);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTimeslotById(@PathVariable String id) {
+        Optional<Timeslot> timeslot = timeslotService.getTimeslotById(id);
+        return ResponseEntity.ok(timeslot);
+        // return timeslotRepository.findById(id)
+        // .map(ResponseEntity::ok)
+        // .orElse(ResponseEntity.notFound().build());
+    }
+
     // Delete a time slot by ID
-    @DeleteMapping("/")
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteTimeslot(@RequestParam String id) {
         timeslotService.deleteTimeslot(id);
         return ResponseEntity.noContent().build();

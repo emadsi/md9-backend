@@ -7,26 +7,27 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Timeslot {
     @Id
     private String id;
+
+    private String timeslotId;
     private String startTime;
     private String endTime;
     private String fieldId;
 
-    //constructors
-    public Timeslot(String id, String startTime, String endTime, String fieldId) {
-        this.id = id;
+    // constructors
+    public Timeslot(String timeslotId, String startTime, String endTime, String fieldId) {
+        this.timeslotId = timeslotId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.fieldId = fieldId;
     }
-    public Timeslot() {}
 
     // Getters and Setters
-    public String getId() {
-        return id;
+    public String getTimeslotId() {
+        return timeslotId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTimeslotId(String timeslotId) {
+        this.timeslotId = timeslotId;
     }
 
     public String getStartTime() {
