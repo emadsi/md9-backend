@@ -3,6 +3,7 @@ package com.md9.service;
 import com.md9.model.Admin;
 import com.md9.repository.AdminRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,6 +18,9 @@ import java.util.UUID;
 
 @Service
 public class AdminService {
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
@@ -37,19 +41,19 @@ public class AdminService {
     // ✅ Get the next available Admin ID
     private String generateNextAdminId() {
         String nextId = adminRepository.findTopByOrderByAdminIdDesc()
-                        .map(admin -> {
-                            try {
-                                String lastId = admin.getAdminId();
-                                if (lastId == null || lastId.trim().isEmpty()) {
-                                    return "1";
-                                }
-                                return String.valueOf(Integer.parseInt(lastId) + 1);
-                            } catch (NumberFormatException e) {
-                                System.out.println("[AdminService] ⚠️ Invalid or missing adminId: " + admin.getAdminId());
-                                return "1";
-                            }
-                        })
-                        .orElse("1");
+                .map(admin -> {
+                    try {
+                        String lastId = admin.getAdminId();
+                        if (lastId == null || lastId.trim().isEmpty()) {
+                            return "1";
+                        }
+                        return String.valueOf(Integer.parseInt(lastId) + 1);
+                    } catch (NumberFormatException e) {
+                        System.out.println("[AdminService] ⚠️ Invalid or missing adminId: " + admin.getAdminId());
+                        return "1";
+                    }
+                })
+                .orElse("1");
 
         System.out.println("[AdminService] 🆔 Generated new Admin ID: " + nextId);
         return nextId;
@@ -63,7 +67,8 @@ public class AdminService {
 
         if (requester.isPresent()) {
             Admin requesterAdmin = requester.get();
-            System.out.println("[AdminService] ✅ Requester found: " + requesterAdmin.getUsername() + " | isSuperAdmin: " + requesterAdmin.getIsSuperAdmin());
+            System.out.println("[AdminService] ✅ Requester found: " + requesterAdmin.getUsername() + " | isSuperAdmin: "
+                    + requesterAdmin.getIsSuperAdmin());
 
             if (requesterAdmin.getIsSuperAdmin()) {
                 boolean usernameTaken = adminRepository.findByUsername(admin.getUsername()).isPresent();
@@ -78,7 +83,8 @@ public class AdminService {
                 admin.setPassword(passwordEncoder.encode(admin.getPassword()));
                 adminRepository.save(admin);
 
-                System.out.println("[AdminService] ✅ Admin registered successfully: " + admin.getUsername() + " with ID: " + admin.getAdminId());
+                System.out.println("[AdminService] ✅ Admin registered successfully: " + admin.getUsername()
+                        + " with ID: " + admin.getAdminId());
                 return ResponseEntity.ok("Admin registered successfully with ID: " + admin.getAdminId());
             } else {
                 System.out.println("[AdminService] ❌ Access denied: Requester is not a super admin");
@@ -88,7 +94,7 @@ public class AdminService {
         }
 
         return ResponseEntity.status(403).body("Access denied: Only super admins can register new admins");
-    }    
+    }
 
     // ✅ Update Admin Profile
     public ResponseEntity<?> updateAdmin(String username, Admin adminUpdate) {
@@ -179,5 +185,16 @@ public class AdminService {
 
         System.out.println("[AdminService] ✅ Password reset for: " + username);
         return ResponseEntity.ok("Password has been reset successfully");
+    }
+
+    public boolean isAdminToken(String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return false;
+        }
+
+        String jwt = token.substring(7);
+        String username = jwtUtil.extractUsername(jwt);
+        Optional<Admin> admin = adminRepository.findByUsername(username);
+        return admin != null;
     }
 }

@@ -49,11 +49,11 @@ public class ReservationController {
     /**
      * Cancel a reservation by ID (for internal use)
      */
-    @DeleteMapping("/cancel/{id}")
-    public ResponseEntity<?> cancelReservation(@PathVariable String id) {
-        reservationService.cancelReservation(id);
-        return ResponseEntity.ok("Reservation cancelled successfully.");
-    }
+    // @DeleteMapping("/cancel/{id}")
+    // public ResponseEntity<?> cancelReservation(@PathVariable String id) {
+    // reservationService.cancelReservation(id);
+    // return ResponseEntity.ok("Reservation cancelled successfully.");
+    // }
 
     /**
      * Get reservation by confirmation number (used for search/confirmation screens)

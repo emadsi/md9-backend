@@ -81,4 +81,12 @@ public class TimeslotService {
     public Optional<Timeslot> getTimeslotById(String id) {
         return timeslotRepository.findById(id);
     }
+
+    public String getStartTimeById(String timeslotId) {
+        // Timeslot slot = timeslotRepository.findById(timeslotId).orElse(null);
+        // return slot != null ? slot.getStartTime() : null;
+        return timeslotRepository.findByTimeslotId(timeslotId)
+                .map(Timeslot::getStartTime)
+                .orElse(null);
+    }
 }

@@ -1,13 +1,19 @@
 package com.md9.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.md9.model.enums.ReservationStatus;
 
 import jakarta.validation.constraints.*;
 
 @Document(collection = "reservations")
 public class Reservation {
     @Id
+    private String id;
+
+    @Indexed(unique = true)
     private String reservationId;
     @NotBlank(message = "Reserver name is required.")
     private String reserverName;
@@ -23,12 +29,17 @@ public class Reservation {
     private String paymentMethod;
     @NotNull(message = "Confirmation number is required.")
     private String confirmationNo;
-    @NotBlank(message = "Status is required.")
-    private String status;
+    @NotNull(message = "Status is required.")
+    private ReservationStatus status;
     @NotBlank(message = "Created At is required")
     private String createdAt;
 
     // Getters
+
+    public String getId() {
+        return this.id;
+    }
+
     public String getReservationId() {
         return this.reservationId;
     }
@@ -61,7 +72,7 @@ public class Reservation {
         return this.confirmationNo;
     }
 
-    public String getStatus() {
+    public ReservationStatus getStatus() {
         return this.status;
     }
 
@@ -70,6 +81,10 @@ public class Reservation {
     }
 
     // Setters
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
     }
@@ -102,7 +117,7 @@ public class Reservation {
         this.confirmationNo = confirmationNo;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ReservationStatus status) {
         this.status = status;
     }
 

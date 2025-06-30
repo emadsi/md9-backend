@@ -2,29 +2,38 @@
 package com.md9.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.md9.model.enums.CancelledByOptions;
 
 @Document(collection = "cancellations")
 public class Cancellation {
     @Id
+    private String id;
+
+    @Indexed(unique = true)
     private String cancellationId;
     private String reservationId;
-    private String cancelledBy; // "User" or Admin Name
+    private CancelledByOptions cancelledBy; // "User" or Admin Name
     private String reason;
-    private String createdAt;
+    private String cancelledAt;
 
-    // Getters 
+    // Getters
+
+    public String getId() {
+        return this.id;
+    }
 
     public String getCancellationId() {
-        return cancellationId;
+        return this.cancellationId;
     }
 
     public String getReservationId() {
         return this.reservationId;
     }
 
-    public String getCancelledBy() {
+    public CancelledByOptions getCancelledBy() {
         return this.cancelledBy;
     }
 
@@ -32,11 +41,15 @@ public class Cancellation {
         return this.reason;
     }
 
-    public String getCreatedAt() {
-        return this.createdAt;
+    public String getCancelledAt() {
+        return this.cancelledAt;
     }
-    
+
     // Setters
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setCancellationId(String cancellationId) {
         this.cancellationId = cancellationId;
@@ -46,7 +59,7 @@ public class Cancellation {
         this.reservationId = reservationId;
     }
 
-    public void setCancelledBy(String cancelledBy) {
+    public void setCancelledBy(CancelledByOptions cancelledBy) {
         this.cancelledBy = cancelledBy;
     }
 
@@ -54,7 +67,7 @@ public class Cancellation {
         this.reason = reason;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCancelledAt(String cancelledAt) {
+        this.cancelledAt = cancelledAt;
     }
 }
